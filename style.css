@@ -1,0 +1,30 @@
+body{
+    background-color: rgb(1, 13, 14);
+    color: aliceblue;
+}
+
+h1 p {
+    background-color: yellow;
+}
+
+strong,
+em {
+    color: rebeccapurple;
+}
+
+a[href="http://google.com"]{
+    color: forestgreen;
+}
+
+h1 + p{
+    color: brown;
+}
+
+h1 > p{
+    color: rgb(14, 248, 170);
+
+}
+
+article:first-child{
+    color: blue;
+}
