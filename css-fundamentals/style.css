@@ -25,6 +25,17 @@ h1 > p{
 
 }
 
-article:first-child{
+article:first-child{ /* select any articale if the articale is first sibling of any parent element*/
     color: blue;
+}
+
+article *:first-child{  /* same as "articale :first-child"*/
+    color: rgb(81, 255, 0);
+}
+
+.demo{
+    color: violet;
+}
+div{
+    color: aqua;
 }
