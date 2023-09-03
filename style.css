@@ -56,4 +56,6 @@ div[class="box2"]{
     padding: 10px;
 }
 
-
+body{
+    background-image: linear-gradient(to top, rgb(1, 13, 14), rgba(3, 60, 59, 0.71));
+}
