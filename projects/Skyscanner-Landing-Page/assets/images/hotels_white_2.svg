@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg height="100%" stroke-miterlimit="10" viewBox="0 0 40 40" width="100%" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.608 13.93c-.363.155-.608.592-.608 1.083V18a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.2a.8.8 0 0 0 .8.8h.4a.8.8 0 0 0 .8-.8V17a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1a1 1 0 0 0 1 1h.999a1 1 0 0 0 1-1.001L27.997 17H28v-1.987c0-.491-.245-.928-.608-1.083l-1.77-.758a14.07 14.07 0 0 0-11.244 0l-1.77.758zM11 20a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.279a1 1 0 0 0 .949-.684L13 25h14l.772 2.316a1 1 0 0 0 .949.684H29a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H11z"/>
+</svg>
