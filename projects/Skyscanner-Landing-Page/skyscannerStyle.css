@@ -1,0 +1,112 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700'); */
+
+@font-face {
+    font-family: 'Roboto Condensed', sans-serif;
+    src: url('assets/fonts/RobotoCondensed-Regular.ttf') format('truetype');
+    src: url('assets/fonts/RobotoCondensed-Light.ttf') format('truetype');
+    src: url('assets/fonts/RobotoCondensed-Italic.ttf') format('truetype');
+    src: url('assets/fonts/RobotoCondensed-BoldItalic.ttf') format('truetype');
+    src: url('assets/fonts/RobotoCondensed-Bold.ttf') format('truetype');
+    src: url('assets/fonts/RobotoCondensed-LightItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #05203c;
+}
+
+.header-div {
+    padding: 2rem 4rem;
+}
+
+nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: .8rem 0;
+    margin-bottom: .5rem;
+}
+
+.logo>a>img {
+    height: 1.8rem;
+}
+
+.nav-menu {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    gap: .3rem;
+}
+
+.region-setting,
+.login,
+.hamburger-menu {
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.region-setting:hover,
+.login:hover,
+.hamburger-menu:hover {
+    background-color: gray;
+}
+
+.region-setting>img,
+.login>img,
+.hamburger-menu>img {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+}
+
+.search-option>.main-heading>h2 {
+    font-weight: 900;
+    font-size: x-large;
+    margin: 2rem 0 1.5rem;
+}
+
+.search-option>.search-fields {
+    display: flex;
+    gap: .3rem;
+
+}
+
+.indivisual-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 4.5rem;
+    background-color: white;
+    color: black;
+    padding: 0 2.4rem;
+}
+
+.indivisual-fields:nth-child(1) {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.indivisual-fields:nth-child(5){
+    border: none;
+    outline: none;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}

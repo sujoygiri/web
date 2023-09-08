@@ -1,0 +1,27 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+
+h1{
+    text-align: center;
+    margin: 10px;
+}
+
+p{
+    background-color: cadetblue;
+    color: aliceblue;
+    width: 50%;
+    padding: 1em;
+    border-radius: 1em;
+    margin: 1em auto;
+}
+
+div  {
+    background-color: blue;
+    position: sticky;
+    top:40px;
+    left: 40px;
+}
+
