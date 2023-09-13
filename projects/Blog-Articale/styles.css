@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+:root {
+  --dark-mode-bg: rgb(14, 24, 28);
+  --dark-mode-text: rgb(255, 255, 255);
+}
+
+body {
+  background-color: var(--dark-mode-bg);
+  color: var(--dark-mode-text);
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  font-size: 2rem;
+  padding: 50px 20px;
+  margin: 0 auto;
+  max-width: 980px;
+}
+
+nav {
+  background-color: black;
+  margin-bottom: 1rem;
+}
+
+nav > ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 2rem;
+}
+
+nav > ul > li > a {
+  text-decoration: none;
+  color: var(--dark-mode-text);
+  font-weight: 600;
+}
+
+.grid {
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 980px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+h1,
+aside > h2 {
+  margin-bottom: 1rem;
+}
+
+.grid > article > img {
+  float: left;
+}
+
+.grid > article > p {
+  margin: 0 0 1rem 0;
+}
+
+.grid > article > img {
+  margin: 0 1rem 1rem 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  border-radius: 1rem;
+}
+
+.feature {
+  width: 200px;
+}
+
+aside {
+  margin-left: 1rem;
+}
+
+.photos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem;
+  padding: 0;
+  margin: 0;
+}
