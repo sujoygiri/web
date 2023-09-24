@@ -1,0 +1,26 @@
+html{
+    margin: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+section{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-auto-rows: minmax(200px, auto);
+    grid-gap: 20px;
+    padding: 20px;
+}
+
+article{
+    background-color: #590675;
+    color: #fff;
+    padding: 20px;
+    border-radius: 1em;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+}

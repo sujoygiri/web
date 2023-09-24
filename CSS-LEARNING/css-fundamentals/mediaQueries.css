@@ -1,0 +1,56 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+:root{
+    --bg-color:black;
+}
+
+h1 {
+    text-align: center;
+}
+
+section {
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem,1fr));
+    gap: 1rem;
+}
+
+section>article {
+    margin: 1.3rem 0;
+}
+
+.articale-content {
+    padding: 1rem 0.5rem;
+    border: 2px solid coral;
+    border-radius: 1rem;
+    margin: auto;
+}
+
+.image-container,
+.content {
+    width: 20rem;
+    height: auto;
+    padding: 0 1rem;
+    margin: auto;
+}
+
+.image-container>img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: fill;
+    border-radius: 1rem;
+}
+
+.content {
+    padding-top: 0.8rem;
+}
+
+@media print and (min-width:400px) {
+    body{
+        color: darkblue;
+    }
+}
