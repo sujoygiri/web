@@ -68,7 +68,7 @@ function stop() {
     clearInterval(interValId);
 }
 
-function getTimeTaken(time) {
+function getTimeTakenEachLap(time) {
     let getHour = Math.floor(time / (3600 * 1000));
     let getMinute = Math.floor(time / (60 * 1000));
     let getSecond = Math.floor(time / 1000);
@@ -87,11 +87,12 @@ function addFlags() {
     tableDiv.removeAttribute("hidden");
     flagLaps++;
     let currentTimeInMs = hourCount * 3600 * 1000 + minuteCount * 60 * 1000 + secondCount * 1000 + milliSecondCount * 10;
-    let timeTakenPerLaps = getTimeTaken(currentTimeInMs - previousTimeInMs);
+    let eachLapTime = getTimeTakenEachLap(currentTimeInMs - previousTimeInMs);
+
     tableFlagData.innerHTML = `
     <tr>
         <td>${flagLaps}</td>
-        ${timeTakenPerLaps}
+        ${eachLapTime}
         <td> 
             ${hourCount >= 10 ? hourCount : `0${hourCount}`}:
             ${minuteCount >= 10 ? minuteCount : `0${minuteCount}`}:

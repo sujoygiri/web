@@ -1,37 +1,41 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
 }
 
-body{
+body {
     background-color: #00191c;
     color: aliceblue;
 }
 
-.container{
+.container {
     display: grid;
     place-content: center;
 }
 
-.time{
+.stopwatch {
+    margin-top: 40%;
+}
+
+.time {
     font-size: 4rem;
     font-weight: bold;
     letter-spacing: 0.9rem;
 }
 
-.time > span:last-child{
+.time > span:last-child {
     font-size: 1.5rem;
     letter-spacing: 0.5rem;
 }
 
-.action-btn{
+.action-btn {
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
     gap: 1.4rem;
 }
 
-.btn{
+.btn {
     background-color: #023c75;
     outline: none;
     border: none;
@@ -44,27 +48,27 @@ body{
 
 }
 
-.btn img{
+.btn img {
     /*padding: 1rem;*/
     width: 2rem;
     height: 2rem;
 }
 
-.flag-btn, .reset-btn{
+.flag-btn, .reset-btn {
     background-color: rgb(82, 80, 80);
 }
 
-.flag-btn:disabled,.reset-btn:disabled{
+.flag-btn:disabled, .reset-btn:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
 
-.flags{
+.flags {
     margin-top: 2rem;
     overflow-y: auto;
 }
 
-.flag-table{
+.flag-table {
     font-family: Arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -74,13 +78,13 @@ body{
 /*    position:  d;*/
 /*}*/
 
-.flag-table th{
+.flag-table th {
     border-bottom: 1px solid #ddd;
     padding: 0.5rem;
     text-align: left;
 }
 
-.flag-table td{
+.flag-table td {
     padding: 0.8rem;
 }
 
