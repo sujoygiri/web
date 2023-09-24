@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="styles.css">
+    <script src="script.js"
+            defer></script>
+    <title>Stop Watch</title>
+</head>
+<body>
+<main>
+    <div class="container">
+        <div class="stopwatch">
+            <p class="time">
+                <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>.<span class="milli-seconds"></span>
+            </p>
+        </div>
+        <div class="action-btn">
+            <button class="play-pause-btn btn"
+                    title="start/stop"><img class="play-pause-image"
+                                            src="assets/play.svg"
+                                            alt="start/stop"></button>
+            <button class="flag-btn btn"
+                    title="flags/laps"><img src="assets/flag.svg"
+                                            alt="flags/laps"></button>
+            <button class="reset-btn btn"
+                    title="reset"><img src="assets/reset.svg"
+                                       alt="reset"></button>
+        </div>
+        <div class="flags" hidden>
+            <table class="flag-table">
+                <thead>
+                    <tr>
+                        <th>Laps</th>
+                        <th>Time</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="flag-data"></tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
