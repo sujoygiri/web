@@ -88,7 +88,6 @@ function addFlags() {
     flagLaps++;
     let currentTimeInMs = hourCount * 3600 * 1000 + minuteCount * 60 * 1000 + secondCount * 1000 + milliSecondCount * 10;
     let timeTakenPerLaps = getTimeTaken(currentTimeInMs - previousTimeInMs);
-    ;
     tableFlagData.innerHTML = `
     <tr>
         <td>${flagLaps}</td>
