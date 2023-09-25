@@ -85,6 +85,7 @@ function getTimeTakenEachLap(time) {
 function slowestOrFastest(timesArray, lapStateObj) {
     let flagLaps = 0;
     let lapRow = "";
+    let firstRowInTr = "";
     allLapStateArr.push(lapStateObj);
     tableFlagData.innerHTML = "";
     if (allLapStateArr.length === 1) {
@@ -103,42 +104,21 @@ function slowestOrFastest(timesArray, lapStateObj) {
     for (let allLapStateArrElement of allLapStateArr) {
         flagLaps++;
         if (Math.max(...timesArray) === allLapStateArrElement.time) {
-            lapRow = `
-        <tr>
-            <td>${flagLaps}&nbsp;<span>Slowest</span></td>
-            ${allLapStateArrElement.eachLapTime}
-            <td>
-                ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
-                ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
-                ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
-                ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
-            </td>
-        </tr>` + lapRow;
+            firstRowInTr = `<td>${flagLaps}&nbsp;<span>Slowest</span></td>`;
         } else if (Math.min(...timesArray) === allLapStateArrElement.time) {
-            lapRow = `
-        <tr>
-            <td>${flagLaps}&nbsp;<span>Fastest</span></td>
-            ${allLapStateArrElement.eachLapTime}
-            <td>
-                ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
-                ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
-                ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
-                ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
-            </td>
-        </tr>` + lapRow;
+            firstRowInTr = `<td>${flagLaps}&nbsp;<span>Fastest</span></td>`;
         } else {
-            lapRow = `
-        <tr>
-            <td>${flagLaps}</td>
-            ${allLapStateArrElement.eachLapTime}
+            firstRowInTr = `<td>${flagLaps}</td>`;
+        }
+        lapRow = "<tr>" + firstRowInTr +
+            `${allLapStateArrElement.eachLapTime}
             <td>
                 ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
                 ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
                 ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
                 ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
-            </td>
-        </tr>` + lapRow;
-        }
+            </td>` +
+            "<tr>" + lapRow;
     }
     return lapRow;
 }
