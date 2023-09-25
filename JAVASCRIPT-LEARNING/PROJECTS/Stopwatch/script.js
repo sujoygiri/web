@@ -1,5 +1,4 @@
 // grabbing all the element from dom
-let timePara = document.querySelector(".time");
 let playPauseBtn = document.querySelector(".play-pause-btn");
 let playPauseImage = document.querySelector(".play-pause-image");
 let flagButton = document.querySelector(".flag-btn");
@@ -16,11 +15,11 @@ let milliSecondCount = 0;
 let secondCount = 0;
 let minuteCount = 0;
 let hourCount = 0;
-let flagLaps = 0;
 let interValId = null;
 let startWatch = false;
 let previousTimeInMs = 0;
-
+let allLapStateArr = [];
+let lapsTimeArray = [];
 
 function updateHour() {
     hourCount++;
@@ -83,24 +82,81 @@ function getTimeTakenEachLap(time) {
     `;
 }
 
+function slowestOrFastest(timesArray, lapStateObj) {
+    let flagLaps = 0;
+    let lapRow = "";
+    allLapStateArr.push(lapStateObj);
+    tableFlagData.innerHTML = "";
+    if (allLapStateArr.length === 1) {
+        return `
+        <tr>
+            <td>1</td>
+            ${lapStateObj.eachLapTime}
+            <td>
+                ${lapStateObj.hourCount >= 10 ? lapStateObj.hourCount : `0${lapStateObj.hourCount}`}:
+                ${lapStateObj.minuteCount >= 10 ? lapStateObj.minuteCount : `0${lapStateObj.minuteCount}`}:
+                ${lapStateObj.secondCount >= 10 ? lapStateObj.secondCount : `0${lapStateObj.secondCount}`}:
+                ${lapStateObj.milliSecondCount >= 10 ? lapStateObj.milliSecondCount : `0${lapStateObj.milliSecondCount}`}
+            </td>
+        </tr>`;
+    }
+    for (let allLapStateArrElement of allLapStateArr) {
+        flagLaps++;
+        if (Math.max(...timesArray) === allLapStateArrElement.time) {
+            lapRow = `
+        <tr>
+            <td>${flagLaps}&nbsp;<span>Slowest</span></td>
+            ${allLapStateArrElement.eachLapTime}
+            <td>
+                ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
+                ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
+                ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
+                ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
+            </td>
+        </tr>` + lapRow;
+        } else if (Math.min(...timesArray) === allLapStateArrElement.time) {
+            lapRow = `
+        <tr>
+            <td>${flagLaps}&nbsp;<span>Fastest</span></td>
+            ${allLapStateArrElement.eachLapTime}
+            <td>
+                ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
+                ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
+                ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
+                ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
+            </td>
+        </tr>` + lapRow;
+        } else {
+            lapRow = `
+        <tr>
+            <td>${flagLaps}</td>
+            ${allLapStateArrElement.eachLapTime}
+            <td>
+                ${allLapStateArrElement.hourCount >= 10 ? allLapStateArrElement.hourCount : `0${allLapStateArrElement.hourCount}`}:
+                ${allLapStateArrElement.minuteCount >= 10 ? allLapStateArrElement.minuteCount : `0${allLapStateArrElement.minuteCount}`}:
+                ${allLapStateArrElement.secondCount >= 10 ? allLapStateArrElement.secondCount : `0${allLapStateArrElement.secondCount}`}:
+                ${allLapStateArrElement.milliSecondCount >= 10 ? allLapStateArrElement.milliSecondCount : `0${allLapStateArrElement.milliSecondCount}`}
+            </td>
+        </tr>` + lapRow;
+        }
+    }
+    return lapRow;
+}
+
+
 function addFlags() {
     tableDiv.removeAttribute("hidden");
-    flagLaps++;
     let currentTimeInMs = hourCount * 3600 * 1000 + minuteCount * 60 * 1000 + secondCount * 1000 + milliSecondCount * 10;
     let eachLapTime = getTimeTakenEachLap(currentTimeInMs - previousTimeInMs);
-
-    tableFlagData.innerHTML = `
-    <tr>
-        <td>${flagLaps}</td>
-        ${eachLapTime}
-        <td> 
-            ${hourCount >= 10 ? hourCount : `0${hourCount}`}:
-            ${minuteCount >= 10 ? minuteCount : `0${minuteCount}`}:
-            ${secondCount >= 10 ? secondCount : `0${secondCount}`}:
-            ${milliSecondCount >= 10 ? milliSecondCount : `0${milliSecondCount}`} 
-        </td>
-    </tr>
-    ` + tableFlagData.innerHTML;
+    lapsTimeArray.push(currentTimeInMs - previousTimeInMs);
+    tableFlagData.innerHTML = slowestOrFastest(lapsTimeArray, {
+        time: currentTimeInMs - previousTimeInMs,
+        eachLapTime,
+        hourCount,
+        minuteCount,
+        secondCount,
+        milliSecondCount
+    });
     previousTimeInMs = currentTimeInMs;
 }
 
@@ -114,8 +170,9 @@ function reset() {
     minutesSpan.textContent = "00";
     hoursSpan.textContent = "00";
     startWatch = false;
-    flagLaps = 0;
     previousTimeInMs = 0;
+    allLapStateArr = [];
+    lapsTimeArray = [];
     playPauseImage.setAttribute("src", "assets/play.svg");
     tableFlagData.innerHTML = "";
     tableDiv.setAttribute("hidden", "");
