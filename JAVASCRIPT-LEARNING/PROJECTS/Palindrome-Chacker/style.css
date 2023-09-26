@@ -1,0 +1,17 @@
+.result{
+    padding: 1rem;
+    color: white;
+    font-family: "Arial Black", sans-serif;
+}
+.palindrome{
+    background-color: green;
+}
+.not-palindrome{
+    background-color: red;
+}
+
+.result span{
+    color: #00f8d3;
+    font-size: large;
+    font-weight: bold;
+}
