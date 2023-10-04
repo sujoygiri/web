@@ -1,0 +1,65 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+    font-family: Algerian sans-serif;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    background-color: #01121c;
+}
+
+button{
+    cursor: pointer;
+}
+
+.container{
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.input_section{
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+}
+
+.input_section > input,button{
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.list_item_section{
+    margin: 1rem 0;
+}
+
+.list_item_section > .list{
+    padding: 0;
+}
+
+.list_item_section > .list > .item{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    background-color: gray;
+    padding: 0.5rem 1rem;
+}
+
+.list_item_section .delete_btn{
+    display: flex;
+    align-items: center;
+    height: 1.5rem;
+    margin: 0 1rem;
+}
+
+
