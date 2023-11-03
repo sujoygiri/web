@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" defer></script>
+    <title>Quiz World</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="interaction-section">
+        <div class="title">
+          <h2>Quiz World</h2>
+        </div>
+        <div class="interactive-btn">
+          <button class="btn start-btn">
+            <span class="btn-text">Start</span>
+          </button>
+          <button class="btn option-btn">
+            <span class="btn-text">Option</span>
+          </button>
+          <button class="btn about-btn">
+            <span class="btn-text">About</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-back_drop">
+        <div class="modal-container">
+          <div class="modal">
+            <div class="modal-body">
+              <div class="dropdown quiz-difficulty">
+                <label for="difficulty">Difficulty</label>
+                <select name="difficulty" id="difficulty">
+                  <option value="">--choose difficulty--</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+              <div class="dropdown quiz-topic">
+                <label for="topic">Topic</label>
+                <select name="topic" id="topic">
+                  <option value="">--choose topic--</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

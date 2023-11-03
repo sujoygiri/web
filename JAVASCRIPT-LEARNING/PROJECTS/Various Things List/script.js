@@ -1,97 +1,75 @@
 let userInput = document.querySelector("input");
 let addButton = document.querySelector(".add_btn");
-let itemDeleteButton = document.querySelector(".delete_btn");
+let domList = document.querySelector(".list");
 
 let allListItem = [];
 
-class Database {
-    dbInstance = null;
-    dbName = "";
-    objectStoreName = "";
+function addListItem() {
+    let userInputValue = userInput.value;
+    allListItem.push(userInputValue);
+    localStorage.removeItem("list_item");
+    localStorage.setItem("list_item", JSON.stringify(allListItem));
+}
 
-    constructor(dbName, objectStoreName) {
-        this.dbName = dbName;
-        this.objectStoreName = objectStoreName;
-    }
-
-    createOrConnectDb() {
-        let dbRequest = indexedDB.open(this.dbName, 2);
-        dbRequest.onsuccess = (event) => {
-            if (event.type === "success") {
-                this.dbInstance = event.target.result;
-                console.log("Db connection successful!");
-            }
-        };
-
-        dbRequest.onerror = (event) => {
-            console.log("Db connection error:", event.target.errorCode);
-        };
-
-        dbRequest.onupgradeneeded = (event) => {
-            event.target.result.createObjectStore(this.objectStoreName, {autoIncrement: true});
-        };
-    }
-
-    getObjectStore() {
-        let dbTransaction = this.dbInstance.transaction(this.objectStoreName, "readwrite");
-        return dbTransaction.objectStore(this.objectStoreName);
+function updateListItem(index) {
+    let editBtn = document.querySelectorAll(".edit_btn")[index];
+    let listItem = document.querySelectorAll(".list_item")[index];
+    // console.log(saveIcon);
+    if (editBtn.textContent === "✏️") {
+        listItem.setAttribute("contenteditable", "true");
+        listItem.focus();
+        editBtn.textContent = "💾";
+        // listItem.addEventListener("blur", () => {
+        //     listItem.removeAttribute("contenteditable");
+        //     editBtn.textContent = "✏️";
+        // });
+    } else {
+        allListItem[index] = listItem.textContent;
+        localStorage.removeItem("list_item");
+        localStorage.setItem("list_item", JSON.stringify(allListItem));
+        listItem.removeAttribute("contenteditable");
+        editBtn.textContent = "✏️";
+        showListItem();
     }
 }
 
-class List extends Database{
-    constructor() {
-        super("ListDb", "ListItem");
-    }
-
-    addListItem(item) {
-        let storeInstance = this.getObjectStore();
-        storeInstance.add(item);
-    }
-
-    updateListItem(updatedValue, dbKey) {
-        let storeInstance = this.getObjectStore();
-        storeInstance.put(updatedValue, dbKey);
-    }
-
-    retriveListItem(){
-        let storeRequest = this.getObjectStore().openCursor();
-        storeRequest.onsuccess = (evt) => {
-            let cursorInstance = evt.target.result;
-            document.body.innerHTML += `${cursorInstance.value.replaceAll(/[<>]/g,"")}`
-            cursorInstance.continue();
-        };
+function showListItem() {
+    let listAsString = localStorage.getItem("list_item");
+    if (listAsString) {
+        allListItem = JSON.parse(listAsString);
+        domList.innerHTML = "";
+        for (let itemIndex in allListItem) {
+            domList.innerHTML += `<li><span class="list_item">${allListItem[itemIndex]}</span><span class="update_btn_section"><button class="edit_btn" onclick="updateListItem(${itemIndex})">✏️</button><button class="delete_btn" onclick="deleteListItem(${itemIndex})">🗑️</button></span></li>`;
+        }
+    } else {
+        localStorage.setItem("list_item", JSON.stringify(allListItem));
     }
 }
 
-let testDb;
-let dbRequest = indexedDB.open("testDb", 2);
-dbRequest.onsuccess = (event) => {
-    if (event.type === "success") {
-        testDb = event.currentTarget.result;
-        console.log("Db creation successful");
-    }
-};
-
-dbRequest.onupgradeneeded = (event) => {
-    event.currentTarget.result.createObjectStore("names", {autoIncrement: true});
-};
-
-function getObjectStore() {
-    let dbTransaction = testDb.transaction(["names"], "readwrite");
-    return dbTransaction.objectStore("names");
+function deleteListItem(index) {
+    allListItem.splice(index, 1);
+    localStorage.removeItem("list_item");
+    localStorage.setItem("list_item", JSON.stringify(allListItem));
+    showListItem();
 }
 
-addButton.addEventListener("click", () => {
-    let req = getObjectStore().openCursor();
-    req.onsuccess = (evt) => {
-        let cursor = evt.target.result;
-        console.log(cursor.value);
-        document.body.innerHTML += `${cursor.value.replaceAll(/[<>]/g,"")}`
-        cursor.continue();
-    };
-    // let store = getObjectStore();
-    // store.add('<img src="" onerror="alert(1)">')
-    // store.put("Sham", 3);
-});
+function main() {
+    showListItem();
+    userInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            addListItem();
+            showListItem();
+            userInput.value = "";
+            userInput.focus();
+        }
+    });
+    addButton.addEventListener("click", () => {
+        addListItem();
+        showListItem();
+        userInput.value = "";
+        userInput.focus();
+    });
+}
 
+main();
 

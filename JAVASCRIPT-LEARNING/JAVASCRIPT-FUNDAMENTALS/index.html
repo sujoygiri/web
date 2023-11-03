@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width"/>
+    <script src="learningClass.js"
+            defer></script>
     <title>Function library example</title>
     <style>
-      input {
-        font-size: 2em;
-        margin: 10px 1px 0;
-      }
+        input {
+            font-size: 2em;
+            margin: 10px 1px 0;
+        }
     </style>
-  </head>
-  <body>
-    <input class="numberInput" type="text" />
-    <p></p>
-    <button>Change Background Color</button>
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-    </ul>
-    <script src="script.js" defer></script>
-  </body>
+</head>
+<body>
+<label>
+    <input class="numberInput"
+           type="text"/>
+</label>
+<p></p>
+<!--<button>Change Background Color</button>-->
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+<div>
+    <audio src="outfoxing.mp3"></audio>
+
+    <button class="paused">Play</button>
+    <br/>
+    <label>
+        <input type="range" min="0" max="1" step="0.01" value="1" class="volume"/>
+    </label>
+</div>
+<!-- -->
+<script src="script.js" defer></script>
+</body>
 </html>

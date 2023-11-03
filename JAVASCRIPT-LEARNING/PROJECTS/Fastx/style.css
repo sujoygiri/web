@@ -1,0 +1,39 @@
+body {
+  background-color: rgb(2, 24, 42);
+  /* color: aliceblue; */
+  font-size: 1rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  margin-top: 3rem;
+}
+
+.progress_bar {
+  width: 20rem;
+  height: 1.3rem;
+  background-color: #f2f2f2;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.progress {
+    height: inherit;
+    background-color: #4caf50;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: inherit;
+    transition: all 100ms ease-in;
+}
+
+.progress_value{
+    font-size: smaller;
+    padding: 0 0.3rem;
+}
