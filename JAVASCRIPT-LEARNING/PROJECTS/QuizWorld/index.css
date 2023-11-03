@@ -92,6 +92,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(32, 31, 31, 0.9);
+    display: none;
 }
 
 .modal-container{
@@ -104,10 +105,13 @@ body {
 
 .modal{
     width: 24rem;
-    height: fit-content;
+    height: auto;
     display: flex;
     flex-direction: column;
     background-color: bisque;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
 }
 
 .modal-body{
@@ -117,4 +121,42 @@ body {
 .dropdown{
     display: flex;
     flex-direction: column;
+    margin: 1rem 0;
+}
+
+.dropdown > label{
+    padding: 0.5rem 0;
+    font-weight: 500;
+    font-size: medium;
+}
+
+.dropdown > input,select{
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+}
+
+.modal-close-btn-box{
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+}
+
+.modal-close-btn-box > button{
+    border-radius: 50%;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 0, 0, 0.507);
+    color: wheat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: none;
+}
+
+.modal-close-btn-box > button:hover{
+    background-color: rgb(255, 0, 0);
 }
