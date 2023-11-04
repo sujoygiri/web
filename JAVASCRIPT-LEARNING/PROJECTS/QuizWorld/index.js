@@ -2,22 +2,23 @@ let startBtn = document.querySelector(".start-btn");
 let optionBtn = document.querySelector(".option-btn");
 let aboutBtn = document.querySelector(".about-btn");
 let modalBackdrop = document.querySelector(".modal-back_drop");
-let modal = document.querySelector(".modal");
+// let modal = document.querySelector(".modal");
 let modalCloseBtn = document.getElementById("modal-close-btn");
 let noOfQuestionsInput = document.getElementById("no-of-question");
 let difficultySelect = document.getElementById("difficulty");
 let topicSelect = document.getElementById("topic");
+let quizTypeSelect = document.getElementById("quiz-type");
 
 function domEvents() {
     startBtn.addEventListener("click", () => {
         window.location.href = "quiz.html";
     });
-    modal.addEventListener("mouseenter", () => {
-        modalCloseBtn.style.display = "block";
-    });
-    modal.addEventListener("mouseleave", () => {
-        modalCloseBtn.style.display = "none";
-    });
+    // modal.addEventListener("mouseenter", () => {
+    //     modalCloseBtn.style.display = "block";
+    // });
+    // modal.addEventListener("mouseleave", () => {
+    //     modalCloseBtn.style.display = "none";
+    // });
     modalCloseBtn.addEventListener("click", () => {
         modalBackdrop.style.display = "none";
     });
@@ -32,6 +33,7 @@ function userChoiceOptions() {
     noOfQuestionsInput.value = quizOptionsObj.noOfQuestions;
     difficultySelect.value = quizOptionsObj.difficulty;
     topicSelect.value = quizOptionsObj.quizTopic;
+    quizTypeSelect.value = quizOptionsObj.quizType;
     noOfQuestionsInput.addEventListener("input", (event) => {
         let enteredValue = Number.parseInt(event.target.value);
         if (enteredValue >= 10 && enteredValue <= 50) {
@@ -49,6 +51,10 @@ function userChoiceOptions() {
         quizOptionsObj.quizTopic = event.target.value;
         createDefaultQuizOption(quizOptionsObj);
     });
+    quizTypeSelect.addEventListener("change", (event) => {
+        quizOptionsObj.quizType = event.target.value;
+        createDefaultQuizOption(quizOptionsObj);
+    });
 }
 
 function createDefaultQuizOption(options) {
@@ -62,7 +68,8 @@ function main() {
         let quizOptionsObj = {
             noOfQuestions: 10,
             difficulty: "easy",
-            quizTopic: "any"
+            quizTopic: "any",
+            quizType: "normal"
         };
         createDefaultQuizOption(quizOptionsObj);
     }

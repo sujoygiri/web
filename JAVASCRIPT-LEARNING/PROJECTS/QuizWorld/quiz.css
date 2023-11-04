@@ -1,20 +1,66 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-  }
-  
-  html,
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1rem;
-    line-height: 1.2rem;
-    height: 100%;
-  }
-  
-  .container {
-    height: 100%;
-    background-image: url("assets/images/quiz-image-1.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  height: 100%;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-image: url("assets/images/quiz-image-1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.quiz-section{
+  width: inherit;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz-card{
+  width: 30rem;
+  background-color: aliceblue;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.quiz-card-body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress_bar {
+  width: 20rem;
+  height: 0.8rem;
+  background-color: #f2f2f2;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.progress {
+  height: inherit;
+  background-color: #0b5382;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: inherit;
+  transition: all 100ms ease-in;
+}

@@ -72,7 +72,7 @@ body {
 }
 
 .option-btn > .btn-text{
-    background: hsl(255, 78%, 37%);
+    background: hsl(255, 69%, 44%);
 }
 
 .about-btn{
@@ -142,11 +142,13 @@ body {
 }
 
 .modal-close-btn-box > button{
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     padding: 0.5rem;
     outline: none;
     border: none;
-    background-color: rgba(255, 0, 0, 0.507);
+    background-color: rgba(255, 0, 0, 0.332);
     color: wheat;
     display: flex;
     justify-content: center;
@@ -154,7 +156,6 @@ body {
     font-weight: bolder;
     font-size: 0.7rem;
     cursor: pointer;
-    display: none;
 }
 
 .modal-close-btn-box > button:hover{

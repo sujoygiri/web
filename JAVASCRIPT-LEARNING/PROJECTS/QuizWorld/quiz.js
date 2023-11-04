@@ -1,0 +1,1 @@
+let apiUrl = `https://opentdb.com/api.php?amount=${'val'}&category=${'a'}&difficulty=${'s'}&type=multiple`
