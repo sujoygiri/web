@@ -16,7 +16,7 @@ function shuffleQuestionOptions(options, correct_option) {
     return options;
 }
 
-function resetQuestionOptionsStyle(optionNodes) {
+function resetQuestionOptionsBackground(optionNodes) {
     for (let index = 0; index < optionNodes.length; index++) {
         optionNodes[index].style.backgroundColor = "#fff";
         optionNodes[index].style.color = "#000";
@@ -50,40 +50,17 @@ function loadQuestion(currentIndex) {
     quizQuestion.innerText = decodeHtml(currentQuestion.question);
     let currentQuestionOptions = shuffleQuestionOptions(currentQuestion.incorrect_answers, currentQuestion.correct_answer);
     let correctOption = decodeHtml(currentQuestion.correct_answer);
-    resetQuestionOptionsStyle(quizQuestionOptionNodes);
+    resetQuestionOptionsBackground(quizQuestionOptionNodes);
     quizQuestionOptionNodes.forEach((option, key) => {
         option.innerText = decodeHtml(currentQuestionOptions[key]);
         option.addEventListener("click", (event) => {
-            // event.stopImmediatePropagation();
+            event.stopPropagation()
             updateOptionBackground(key, correctOption, quizQuestionOptionNodes);
         });
     });
 }
 
-// changing button style based on passed parameter
-function changeBtnState(btnNode, btnType, changingState) {
-    if (btnType === "previous") {
-        if (changingState === "disable") {
-            btnNode.setAttribute("disabled", "true");
-            btnNode.style.cursor = "not-allowed";
-            btnNode.style.opacity = "0.6";
-        } else {
-            btnNode.removeAttribute("disabled");
-            btnNode.style.cursor = "pointer";
-            btnNode.style.opacity = "1";
-        }
-    } else if (btnType === "next") {
-        console.log(btnType, changingState);
-        if (changingState === "submit") {
-            btnNode.innerText = "Submit";
-            btnNode.style.backgroundColor = "#055a88";
-        } else {
-            btnNode.innerText = "Next";
-            btnNode.style.backgroundColor = "#4e0ea2";
-        }
-    }
-}
-
+// show result after finishing the quiz
 function showResult() {
     let resultSectionNode = document.querySelector(".result-section");
     let resultNode = document.getElementById("result");
@@ -104,29 +81,21 @@ function showResult() {
 
 // starting a normal button based interactive quiz
 function startNormalInteractionQuiz() {
-    const previousBtn = document.querySelector(".prev-btn");
     const nextBtn = document.querySelector(".next-btn");
     let initialIndex = 0;
-    changeBtnState(previousBtn, "previous", "disable");
     loadQuestion(initialIndex);
-    previousBtn.addEventListener("click", () => {
-        initialIndex--;
-        console.log("clicked previous", initialIndex);
-        if (initialIndex && initialIndex < questionsArray.length - 1) {
-            changeBtnState(previousBtn, "previous", "enable");
-            nextBtn.innerText === "Submit" && changeBtnState(nextBtn, "next", "next");
-        } else {
-            changeBtnState(previousBtn, "previous", "disable");
-        }
-        loadQuestion(initialIndex);
-    });
     nextBtn.addEventListener("click", () => {
         initialIndex++;
         if (initialIndex && initialIndex < questionsArray.length - 1) {
-            changeBtnState(previousBtn, "previous", "enable");
             loadQuestion(initialIndex);
         } else {
-            changeBtnState(nextBtn, "next", "submit");
+            if (nextBtn.innerText.toLowerCase() === 'next') {
+                loadQuestion(initialIndex);
+                nextBtn.innerText = "Submit";
+                nextBtn.style.backgroundColor = "#055a88";
+            } else {
+                showResult();
+            }
         }
     });
     console.log(questionsArray);
