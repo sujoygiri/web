@@ -1,19 +1,52 @@
 import env from "./secret.js";
 
-async function getData(supabaseObj) {
-    // const { data, error } = await supabaseObj.auth.signUp({
-    //     email: 'example2@email.com',
-    //     password: 'example1-password',
-    //   })
-      const { data, error } = await supabaseObj.auth.getSession()
-      return data
+class Auth {
+    constructor() {
+        this.supabaseClient = supabase.createClient(env.CLIENT_URL, env.ANON_KEY, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: true,
+                detectSessionInUrl: false,
+                storageKey: "auth-token"
+            }
+        });
+    }
+
+    async getUser() {
+        const {data, error} = await this.supabaseClient.auth.getSession();
+        if (error) {
+            throw error;
+        }
+        return data;
+    }
+
+    async loginUser(email, password) {
+        const {
+            data,
+            error
+        } = await this.supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+        });
+        if (error) {
+            throw error;
+        }
+        return data;
+    }
+
+    async signUpUser(email, password) {
+        const {data, error} = await this.supabaseClient.auth.signUp({
+            email,
+            password,
+        });
+        if (error) {
+            throw error;
+        }
+        return data;
+    }
 }
 
-export function connectToClient() {
-    const supabaseObj = supabase.createClient(env.CLIENT_URL, env.ANON_KEY);
-    // getData(supabaseObj).then(data => {
-    //     console.log(data);
-    // });
-    
-}
+
+const authApi = new Auth();
+export default authApi;
 
