@@ -13,18 +13,15 @@ class Auth {
     }
 
     async getUser() {
-        const {data, error} = await this.supabaseClient.auth.getSession();
+        const { data, error } = await this.supabaseClient.auth.getSession();
         if (error) {
             throw error;
         }
         return data;
     }
 
-    async loginUser(email, password) {
-        const {
-            data,
-            error
-        } = await this.supabaseClient.auth.signInWithPassword({
+    async signIn(email, password) {
+        const { data, error } = await this.supabaseClient.auth.signInWithPassword({
             email,
             password,
         });
@@ -34,8 +31,8 @@ class Auth {
         return data;
     }
 
-    async signUpUser(email, password) {
-        const {data, error} = await this.supabaseClient.auth.signUp({
+    async signUp(email, password) {
+        const { data, error } = await this.supabaseClient.auth.signUp({
             email,
             password,
         });
