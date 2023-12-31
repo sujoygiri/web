@@ -1,15 +1,8 @@
-import env from "./secret.js";
+import connectSupaBaseClient from "./supabase-client.js";
 
 class Auth {
     constructor() {
-        this.supabaseClient = supabase.createClient(env.CLIENT_URL, env.ANON_KEY, {
-            auth: {
-                autoRefreshToken: false,
-                persistSession: true,
-                detectSessionInUrl: false,
-                storageKey: "auth-token"
-            }
-        });
+        this.supabaseClient = connectSupaBaseClient()
     }
 
     async getUser() {

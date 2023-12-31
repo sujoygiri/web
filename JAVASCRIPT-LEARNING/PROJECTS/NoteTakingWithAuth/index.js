@@ -1,38 +1,30 @@
 import authApi from "./auth-script.js";
-let TIMEOUT_ID = null;
+import {handelError} from "./util.js";
 
-function handelError(error,errorType){
-    const alertNode = document.querySelector(".alert");
-    alertNode.classList.add(`alert-${errorType}`);
-    alertNode.classList.remove("d-none")
-    alertNode.innerText = error.message;
-    TIMEOUT_ID = setTimeout(()=>{
-        alertNode.classList.add("d-none")
-    },3000)
-}
+const alertNode = document.querySelector(".alert");
 
 /**
-* @param {string} emailId
-* @param {string} password
-*/
-async function signUpUser(emailId,password){
+ * @param {string} emailId
+ * @param {string} password
+ */
+async function signUpUser(emailId, password) {
     try {
-        return await authApi.signUp(emailId,password);
+        return await authApi.signUp(emailId, password);
     } catch (error) {
-        handelError(error,"danger")
+        handelError(error, "danger", alertNode);
     }
 }
 
 /**
-* @param {string} emailId
-* @param {string} password
-*/
+ * @param {string} emailId
+ * @param {string} password
+ */
 async function signInUser(emailId, password) {
     try {
-        return await authApi.signIn(emailId,password)
+        return await authApi.signIn(emailId, password);
     } catch (error) {
-        error.message = "Invalid sign in credentials"
-        handelError(error,"danger")
+        error.message = "Invalid sign in credentials";
+        handelError(error, "danger", alertNode);
     }
 }
 
@@ -44,7 +36,7 @@ async function signInUser(emailId, password) {
  * upon clicking on signup btn rendering a confirm password field.
  * upon clicking on signin btn removing confirm password field
  */
-function showCorrectAuthFormAndAuthenticate(action,modalObj,modalNode) {
+function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
     const authFormNode = document.getElementById("auth-form");
     const authFormTitleNode = document.querySelector(".modal-title");
     const confirmPasswordBoxNode = document.getElementById("confirm-password-box");
@@ -52,14 +44,26 @@ function showCorrectAuthFormAndAuthenticate(action,modalObj,modalNode) {
     const signInBtnBoxNode = document.getElementById("signin-btn-box");
     const signUpBtnNode = document.getElementById("signup-btn");
     const signInBtnNode = document.getElementById("signin-btn");
+    const submitBtnNode = document.getElementById("submit-btn");
+    const spinnerNode = document.getElementById("spinner");
+    const inputNode = document.querySelectorAll("input");
     confirmPasswordBoxNode.classList.add("d-none");
     signInBtnBoxNode.classList.add("d-none");
+
+    // function for clearing input node upon change authentication mode
+    function clearInputField(nodes) {
+        nodes.forEach((input) => {
+            input.value = "";
+        });
+    }
+
     signUpBtnNode.addEventListener("click", () => {
         confirmPasswordBoxNode.classList.remove("d-none");
         authFormTitleNode.innerText = "Sign Up";
         authFormTitleNode.dataset.name = "signup";
         signUpBtnBoxNode.classList.add("d-none");
         signInBtnBoxNode.classList.remove("d-none");
+        clearInputField(inputNode);
     });
     signInBtnNode.addEventListener("click", () => {
         confirmPasswordBoxNode.classList.add("d-none");
@@ -67,39 +71,44 @@ function showCorrectAuthFormAndAuthenticate(action,modalObj,modalNode) {
         authFormTitleNode.dataset.name = "signin";
         signUpBtnBoxNode.classList.remove("d-none");
         signInBtnBoxNode.classList.add("d-none");
+        clearInputField(inputNode);
     });
-    authFormNode.addEventListener("submit",async (event) => {
+    authFormNode.addEventListener("submit", async (event) => {
         event.preventDefault();
+        submitBtnNode.setAttribute("disabled", "true");
+        spinnerNode.classList.remove("d-none");
         let emailId = event.target[0].value;
         let password = event.target[1].value;
         let confirmPassword = event.target[2].value;
         if (authFormTitleNode.dataset.name === "signin") {
             let userData = await signInUser(emailId, password);
-            if(userData){
+            if (userData) {
                 modalObj.hide(modalNode);
-                window.location.href = action + "-" + "note" + "." + "html"
-                clearTimeout(TIMEOUT_ID)
+                window.location.href = action + "-" + "note" + "." + "html";
             }
         } else if (authFormTitleNode.dataset.name === "signup") {
-            if(password === confirmPassword){
-                let userData = await signUpUser(emailId,password);
-                if(userData){
+            if (password === confirmPassword) {
+                let userData = await signUpUser(emailId, password);
+                if (userData) {
                     modalObj.hide(modalNode);
-                    window.location.href = action + "-" + "note" + "." + "html"
+                    window.location.href = action + "-" + "note" + "." + "html";
                 }
-            }else{
-
+            } else {
+                let error = new Error("Password did not match");
+                handelError(error, "warning", alertNode);
             }
         }
+        submitBtnNode.removeAttribute("disabled");
+        spinnerNode.classList.add("d-none");
     });
 }
 
 /**
- * @param {string} action 
- * 
+ * @param {string} action
+ *
  * calling getUser() method from authApi object
  * and checking if user exist or not
- * if exist go to respective page 
+ * if exist go to respective page
  * if not open authentication modal
  * also calling 'showCorrectAuthFormAndAuthenticate()' for rendering correct auth form
  */
@@ -107,7 +116,7 @@ async function isUserAuthenticated(action) {
     const modalObj = new bootstrap.Modal("#main-modal");
     const modalNode = document.getElementById("main-modal");
     try {
-        const { session: { user } } = await authApi.getUser();
+        const {session: {user}} = await authApi.getUser();
         if (user && user.id) {
             switch (action) {
                 case "create":
@@ -121,13 +130,14 @@ async function isUserAuthenticated(action) {
             }
         } else {
             modalObj.show(modalNode);
-            showCorrectAuthFormAndAuthenticate(action,modalObj,modalNode);
+            showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode);
         }
     } catch (e) {
         modalObj.show(modalNode);
-        showCorrectAuthFormAndAuthenticate(action,modalObj,modalNode);
+        showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode);
     }
 }
+
 /**
  * getting reference of create and view note btn
  * And attaching click event listener for
