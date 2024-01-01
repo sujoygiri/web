@@ -3,45 +3,86 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <title>Q Note</title>
 </head>
 
 <body>
-    <div class="header">
-        <div class="nav-bar">
-            <nav class="navbar navbar-expand-lg" style="background-color: #064470;" data-bs-theme="dark">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Q Note</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-                        </ul>
-                        <div class="d-flex">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </div>
+<div class="header">
+    <div class="nav-bar">
+        <nav class="navbar navbar-expand-lg"
+             style="background-color: #064470;"
+             data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand"
+                   href="#">Q Note</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse"
+                     id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active"
+                               aria-current="page"
+                               href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="#">Link</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-success"
+                                type="submit">Search
+                        </button>
                     </div>
                 </div>
-            </nav>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="container overflow-hidden">
+    <div class="d-flex justify-content-center">
+        <div class="m-5 w-50">
+            <div class="vstack gap-3">
+                <div class="p-2 text-white align-items-center position-relative rounded-2 shadow-lg border-top border-5 border-info" style="background-color: #281d1d">
+                    <span class="ps-3"
+                          style="font-size: 0.8rem; color: #f6cd02">Jan 01, 24 at 10:20</span>
+                    <span class="d-block p-3 text-truncate">
+                        First item Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, unde. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos eos laboriosam necessitatibus temporibus totam veritatis vero voluptates! Ab fugiat harum quia! Asperiores aut commodi distinctio dolor esse, ex expedita fugit ipsa ipsum iure neque, obcaecati porro suscipit ut, voluptatum? Autem doloribus expedita in inventore maxime, odio officia veniam. Ducimus, rerum?
+                    </span>
+                    <div class="position-absolute end-0 top-0 pt-2 me-2">
+                        <i class="bi bi-pencil-fill me-2"
+                           role="button"
+                           title="Edit"
+                           style="font-size: 1rem; color: #148306;"></i>
+                        <i class="bi bi-trash-fill"
+                           role="button"
+                           title="Delete"
+                           style="font-size: 1rem; color: #ce0404;"></i>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
-    <div class="main">
-        
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 </body>
