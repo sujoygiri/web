@@ -12,6 +12,7 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="view-note.js" type="module"></script>
     <title>Q Note</title>
 </head>
 
@@ -56,28 +57,10 @@
         </nav>
     </div>
 </div>
-<div class="container overflow-hidden">
+<div class="overflow-hidden">
     <div class="d-flex justify-content-center">
-        <div class="m-5 w-50">
-            <div class="vstack gap-3">
-                <div class="p-2 text-white align-items-center position-relative rounded-2 shadow-lg border-top border-5 border-info" style="background-color: #281d1d">
-                    <span class="ps-3"
-                          style="font-size: 0.8rem; color: #f6cd02">Jan 01, 24 at 10:20</span>
-                    <span class="d-block p-3 text-truncate">
-                        First item Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, unde. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos eos laboriosam necessitatibus temporibus totam veritatis vero voluptates! Ab fugiat harum quia! Asperiores aut commodi distinctio dolor esse, ex expedita fugit ipsa ipsum iure neque, obcaecati porro suscipit ut, voluptatum? Autem doloribus expedita in inventore maxime, odio officia veniam. Ducimus, rerum?
-                    </span>
-                    <div class="position-absolute end-0 top-0 pt-2 me-2">
-                        <i class="bi bi-pencil-fill me-2"
-                           role="button"
-                           title="Edit"
-                           style="font-size: 1rem; color: #148306;"></i>
-                        <i class="bi bi-trash-fill"
-                           role="button"
-                           title="Delete"
-                           style="font-size: 1rem; color: #ce0404;"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-4 m-md-5 w-50">
+            <div class="vstack gap-3" id="note-list"></div>
         </div>
 
     </div>
