@@ -1,6 +1,5 @@
-import noteApi from "./db-script.js";
+import {noteApi,authApi} from "./supabse-api.js";
 import {handelError} from "./util.js";
-
 function main() {
     const noteWriterNode = document.getElementById("note-writer");
     const typingStatusNode = document.getElementById("typing-status");
@@ -10,7 +9,6 @@ function main() {
     let intervalId;
     let noteContent = window.localStorage.getItem("note");
     if (noteContent && noteContent.length) {
-        console.log(noteContent);
         noteWriterNode.value = noteContent;
     }
     noteWriterNode.addEventListener("input", () => {
@@ -30,19 +28,31 @@ function main() {
             }
         });
     });
-    noteSaveBtnNode.addEventListener("click", () => {
+    noteSaveBtnNode.addEventListener("click", async () => {
         spinnerNode.classList.remove("d-none");
         noteSaveBtnNode.setAttribute("disabled", "true");
         let noteContent = window.localStorage.getItem("note");
-        noteApi.addNote(noteContent).then(data => {
-            if (data) {
-                spinnerNode.classList.add("d-none");
-                localStorage.removeItem("note");
-                window.location.href = "/view-note.html";
+        try {
+            const {session} = await authApi.getUser();
+            if (session && session.user) {
+                //     update username to the nav bar -> to be implemented
+                let data = await noteApi.addNote(noteContent);
+                if (data) {
+                    localStorage.removeItem("note");
+                    window.location.href = "/view-note.html";
+                } else {
+                    let error = new Error("Something went wrong! Failed to save your note.");
+                    handelError(error, "danger", alertNode);
+                }
+            } else {
+                let error = new Error("Before creating a note you must need to sign in/sign up.");
+                handelError(error, "danger", alertNode);
             }
-        }).catch(error => {
+        } catch (error) {
             handelError(error, "danger", alertNode);
-        });
+        }
+        spinnerNode.classList.add("d-none");
+        noteSaveBtnNode.removeAttribute("disabled");
     });
 }
 

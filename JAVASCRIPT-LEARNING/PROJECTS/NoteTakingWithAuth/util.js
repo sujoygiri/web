@@ -1,4 +1,7 @@
 export function handelError(error, errorType, alertNode) {
+    if (error.message.toLowerCase().includes('failed to fetch')){
+        error.message = 'Network error! Please check your internet connection.'
+    }
     alertNode.classList.add(`alert-${errorType}`);
     alertNode.classList.remove("d-none");
     alertNode.innerText = error.message;

@@ -1,4 +1,4 @@
-import noteApi from "./db-script.js";
+import {noteApi} from "./supabse-api.js";
 import {getNoteHtmlStructure} from "./util.js";
 
 function main() {

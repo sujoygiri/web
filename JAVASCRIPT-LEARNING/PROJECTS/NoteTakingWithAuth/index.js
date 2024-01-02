@@ -1,40 +1,13 @@
-import authApi from "./auth-script.js";
+import {authApi} from "./supabse-api.js";
 import {handelError} from "./util.js";
-
-const alertNode = document.querySelector(".alert");
-
-/**
- * @param {string} emailId
- * @param {string} password
- */
-async function signUpUser(emailId, password) {
-    try {
-        return await authApi.signUp(emailId, password);
-    } catch (error) {
-        handelError(error, "danger", alertNode);
-    }
-}
-
-/**
- * @param {string} emailId
- * @param {string} password
- */
-async function signInUser(emailId, password) {
-    try {
-        return await authApi.signIn(emailId, password);
-    } catch (error) {
-        error.message = "Invalid sign in credentials";
-        handelError(error, "danger", alertNode);
-    }
-}
 
 /**
  * @param {string} action
  * @param {bootstrap.Modal} modalObj
  * @param {HTMLElement} modalNode
  * rendering correct modal format based on user interaction,
- * upon clicking on signup btn rendering a confirm password field.
- * upon clicking on signin btn removing confirm password field
+ * upon clicking on sign up btn rendering a confirmation password field.
+ * upon clicking on sign in btn removing confirm password field
  */
 function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
     const authFormNode = document.getElementById("auth-form");
@@ -46,6 +19,7 @@ function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
     const signInBtnNode = document.getElementById("signin-btn");
     const submitBtnNode = document.getElementById("submit-btn");
     const spinnerNode = document.getElementById("spinner");
+    const alertNode = document.getElementById("modal-alert");
     const inputNode = document.querySelectorAll("input");
     confirmPasswordBoxNode.classList.add("d-none");
     signInBtnBoxNode.classList.add("d-none");
@@ -81,17 +55,26 @@ function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
         let password = event.target[1].value;
         let confirmPassword = event.target[2].value;
         if (authFormTitleNode.dataset.name === "signin") {
-            let userData = await signInUser(emailId, password);
-            if (userData) {
-                modalObj.hide(modalNode);
-                window.location.href = action + "-" + "note" + "." + "html";
-            }
-        } else if (authFormTitleNode.dataset.name === "signup") {
-            if (password === confirmPassword) {
-                let userData = await signUpUser(emailId, password);
+            try {
+                let userData = await authApi.signIn(emailId, password);
                 if (userData) {
                     modalObj.hide(modalNode);
                     window.location.href = action + "-" + "note" + "." + "html";
+                }
+            } catch (error) {
+                handelError(error, "danger", alertNode);
+            }
+        } else if (authFormTitleNode.dataset.name === "signup") {
+            if (password === confirmPassword) {
+                try {
+                    let userData = await authApi.signUp(emailId, password);
+                    if (userData) {
+                        modalObj.hide(modalNode);
+                        window.location.href = action + "-" + "note" + "." + "html";
+                    }
+
+                } catch (error) {
+
                 }
             } else {
                 let error = new Error("Password did not match");
@@ -115,9 +98,10 @@ function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
 async function isUserAuthenticated(action) {
     const modalObj = new bootstrap.Modal("#main-modal");
     const modalNode = document.getElementById("main-modal");
+    const mainAlertNode = document.getElementById("main-alert");
     try {
-        const {session: {user}} = await authApi.getUser();
-        if (user && user.id) {
+        const {session} = await authApi.getUser();
+        if (session && session.user) {
             switch (action) {
                 case "create":
                     window.location.href = "create-note.html";
@@ -132,9 +116,8 @@ async function isUserAuthenticated(action) {
             modalObj.show(modalNode);
             showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode);
         }
-    } catch (e) {
-        modalObj.show(modalNode);
-        showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode);
+    } catch (error) {
+        handelError(error, "danger", mainAlertNode);
     }
 }
 
