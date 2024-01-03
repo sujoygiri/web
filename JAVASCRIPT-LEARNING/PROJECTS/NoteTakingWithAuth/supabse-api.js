@@ -65,11 +65,17 @@ class NoteDb extends Auth{
     async deleteNote(){
 
     }
-
-
 }
 
 export const authApi = new Auth();
 export const noteApi = new NoteDb();
+export async function checkUserAuthentication(){
+    try{
+        const {session} = await authApi.getUser()
+        return session
+    }catch(error){
+        throw error
+    }
+}
 
 

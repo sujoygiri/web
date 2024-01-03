@@ -1,5 +1,6 @@
-import {noteApi,authApi} from "./supabse-api.js";
-import {handelError} from "./util.js";
+import { noteApi, checkUserAuthentication } from "./supabse-api.js";
+import { handelError } from "./util.js";
+
 function main() {
     const noteWriterNode = document.getElementById("note-writer");
     const typingStatusNode = document.getElementById("typing-status");
@@ -33,19 +34,12 @@ function main() {
         noteSaveBtnNode.setAttribute("disabled", "true");
         let noteContent = window.localStorage.getItem("note");
         try {
-            const {session} = await authApi.getUser();
-            if (session && session.user) {
-                //     update username to the nav bar -> to be implemented
-                let data = await noteApi.addNote(noteContent);
-                if (data) {
-                    localStorage.removeItem("note");
-                    window.location.href = "/view-note.html";
-                } else {
-                    let error = new Error("Something went wrong! Failed to save your note.");
-                    handelError(error, "danger", alertNode);
-                }
+            let data = await noteApi.addNote(noteContent);
+            if (data) {
+                localStorage.removeItem("note");
+                window.location.href = "/view-note.html";
             } else {
-                let error = new Error("Before creating a note you must need to sign in/sign up.");
+                let error = new Error("Something went wrong! Failed to save your note.");
                 handelError(error, "danger", alertNode);
             }
         } catch (error) {
@@ -56,4 +50,14 @@ function main() {
     });
 }
 
-main();
+checkUserAuthentication().then(session=>{
+    if (session) {
+        main()
+    }else{
+        window.location.href = "/";
+    }
+}).catch(error => {
+    if(error){
+        window.location.href = "/"
+    }
+})
