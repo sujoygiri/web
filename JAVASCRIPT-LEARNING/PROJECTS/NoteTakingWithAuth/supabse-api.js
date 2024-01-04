@@ -52,18 +52,33 @@ class NoteDb extends Auth{
 
     }
 
-    async getNote() {
+    async getNote(from,to) {
         const {
+            error,
             data,
-            error
-        } = await supabaseClient.from("notes").select();
+            count
+        } = await supabaseClient.from("notes")
+            .select('*', { count: 'exact' })
+            .range(from,to);
         if (error) {
             throw error;
         }
-        return data;
+        return {data,count};
     }
     async deleteNote(){
 
+    }
+
+    async searchNote(searchedValue,form,to){
+        const {error, data, count } = await supabaseClient
+            .from('notes')
+            .select('*', { count: 'exact' })
+            .ilike('note_content', `%${searchedValue}%`)
+            .range(form,to);
+        if(error){
+            throw error
+        }
+        return {data,count};
     }
 }
 

@@ -7,27 +7,21 @@ function main() {
     const noteSaveBtnNode = document.getElementById("note-save-btn");
     const spinnerNode = document.getElementById("spinner");
     const alertNode = document.querySelector(".alert");
-    let intervalId;
+    let timeOutId = null;
     let noteContent = window.localStorage.getItem("note");
     if (noteContent && noteContent.length) {
         noteWriterNode.value = noteContent;
     }
-    noteWriterNode.addEventListener("input", () => {
+    noteWriterNode.addEventListener("input", (event) => {
         typingStatusNode.innerText = "Typing...";
-    });
-    noteWriterNode.addEventListener("keyup", (event) => {
-        let prevKeyStrokeTime = new Date().getTime();
-        window.clearInterval(intervalId);
-        intervalId = window.setInterval(() => {
-            let delay = new Date().getTime() - prevKeyStrokeTime;
+        window.clearTimeout(timeOutId);
+        timeOutId = window.setTimeout(() => {
             noteSaveBtnNode.setAttribute("disabled", "true");
-            if (delay >= 1000) {
-                typingStatusNode.innerText = "Saved locally";
-                window.localStorage.setItem("note", event.target.value);
-                window.clearInterval(intervalId);
-                noteSaveBtnNode.removeAttribute("disabled");
-            }
-        });
+            typingStatusNode.innerText = "Saved locally";
+            window.localStorage.setItem("note", event.target.value);
+            window.clearTimeout(timeOutId);
+            noteSaveBtnNode.removeAttribute("disabled");
+        },1000);
     });
     noteSaveBtnNode.addEventListener("click", async () => {
         spinnerNode.classList.remove("d-none");
@@ -36,7 +30,8 @@ function main() {
         try {
             let data = await noteApi.addNote(noteContent);
             if (data) {
-                localStorage.removeItem("note");
+                noteWriterNode.value = null;
+                window.localStorage.removeItem("note");
                 window.location.href = "/view-note.html";
             } else {
                 let error = new Error("Something went wrong! Failed to save your note.");
@@ -50,14 +45,14 @@ function main() {
     });
 }
 
-checkUserAuthentication().then(session=>{
+checkUserAuthentication().then(session => {
     if (session) {
-        main()
-    }else{
+        main();
+    } else {
         window.location.href = "/";
     }
 }).catch(error => {
-    if(error){
-        window.location.href = "/"
+    if (error) {
+        window.location.href = "/";
     }
-})
+});
