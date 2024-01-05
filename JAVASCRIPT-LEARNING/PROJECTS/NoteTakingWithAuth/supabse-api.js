@@ -37,7 +37,7 @@ export class Auth {
 }
 
 
-class NoteDb extends Auth{
+class NoteDb{
     async addNote(noteContent) {
         const {data, error} = await supabaseClient
             .from("notes")
@@ -48,28 +48,14 @@ class NoteDb extends Auth{
         }
         return data;
     }
-    async updateNote(noteContent){
+    async updateNote(noteId,noteContent){
 
-    }
-
-    async getNote(from,to) {
-        const {
-            error,
-            data,
-            count
-        } = await supabaseClient.from("notes")
-            .select('*', { count: 'exact' })
-            .range(from,to);
-        if (error) {
-            throw error;
-        }
-        return {data,count};
     }
     async deleteNote(){
 
     }
 
-    async searchNote(searchedValue,form,to){
+    async searchAndGet(searchedValue,form,to){
         const {error, data, count } = await supabaseClient
             .from('notes')
             .select('*', { count: 'exact' })

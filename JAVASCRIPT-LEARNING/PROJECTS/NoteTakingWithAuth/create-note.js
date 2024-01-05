@@ -5,7 +5,7 @@ function main() {
     const noteWriterNode = document.getElementById("note-writer");
     const typingStatusNode = document.getElementById("typing-status");
     const noteSaveBtnNode = document.getElementById("note-save-btn");
-    const spinnerNode = document.getElementById("spinner");
+    const saveBtnSpinnerNode = document.getElementById("save-btn-spinner");
     const alertNode = document.querySelector(".alert");
     let timeOutId = null;
     let noteContent = window.localStorage.getItem("note");
@@ -24,7 +24,7 @@ function main() {
         },1000);
     });
     noteSaveBtnNode.addEventListener("click", async () => {
-        spinnerNode.classList.remove("d-none");
+        saveBtnSpinnerNode.classList.remove("d-none");
         noteSaveBtnNode.setAttribute("disabled", "true");
         let noteContent = window.localStorage.getItem("note");
         try {
@@ -40,7 +40,7 @@ function main() {
         } catch (error) {
             handelError(error, "danger", alertNode);
         }
-        spinnerNode.classList.add("d-none");
+        saveBtnSpinnerNode.classList.add("d-none");
         noteSaveBtnNode.removeAttribute("disabled");
     });
 }
