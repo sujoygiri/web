@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 import connectSupaBaseClient from "./supabase-client.js";
 
-const supabaseClient = connectSupaBaseClient()
+const supabaseClient = connectSupaBaseClient();
 
 export class Auth {
     async getUser() {
@@ -34,48 +34,71 @@ export class Auth {
         }
         return data;
     }
+
 }
 
 
-class NoteDb{
+class NoteDb {
     async addNote(noteContent) {
-        const {data, error} = await supabaseClient
+        const { data, error } = await supabaseClient
             .from("notes")
-            .insert({note_content: noteContent})
+            .insert({ note_content: noteContent })
             .select();
         if (error) {
             throw error;
         }
         return data;
     }
-    async updateNote(noteId,noteContent){
+    async updateNote(noteId, noteContent) {
 
     }
-    async deleteNote(){
+    async deleteNote() {
 
     }
 
-    async searchAndGet(searchedValue,form,to){
-        const {error, data, count } = await supabaseClient
-            .from('notes')
-            .select('*', { count: 'exact' })
-            .ilike('note_content', `%${searchedValue}%`)
-            .range(form,to);
-        if(error){
-            throw error
+    async searchAndGet(selectType, searchedValue, form, to) {
+        if (selectType === "note_content") {
+            const { error, data, count } = await supabaseClient
+                .from('notes')
+                .select('*', { count: 'exact' })
+                .ilike(selectType, `%${searchedValue}%`)
+                .range(form, to);
+            if (error) {
+                throw error;
+            }
+            return { data, count };
+        } else {
+            const { error, data, count } = await supabaseClient
+                .from('notes')
+                .select("*", { count: 'exact' })
+                .eq(selectType, searchedValue);
+            if (error) {
+                throw error;
+            }
+            return { data, count };
         }
-        return {data,count};
+    }
+
+    async sortNote(selectDataType, isAscending) {
+        const { data, error } = await supabaseClient
+            .from('notes')
+            .select('*')
+            .order(selectDataType, isAscending);
+        if (error) {
+            throw error;
+        }
+        return data;
     }
 }
 
 export const authApi = new Auth();
 export const noteApi = new NoteDb();
-export async function checkUserAuthentication(){
-    try{
-        const {session} = await authApi.getUser()
-        return session
-    }catch(error){
-        throw error
+export async function checkUserAuthentication() {
+    try {
+        const { session } = await authApi.getUser();
+        return session;
+    } catch (error) {
+        throw error;
     }
 }
 

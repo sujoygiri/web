@@ -1,6 +1,6 @@
 export function handelError(error, errorType, alertNode) {
-    if (error.message.toLowerCase().includes('failed to fetch')){
-        error.message = 'Network error! Please check your internet connection.'
+    if (error.message.toLowerCase().includes('failed to fetch')) {
+        error.message = 'Network error! Please check your internet connection.';
     }
     alertNode.classList.add(`alert-${errorType}`);
     alertNode.classList.remove("d-none");
@@ -11,9 +11,10 @@ export function handelError(error, errorType, alertNode) {
     }, 3000);
 }
 
-export function getNoteHtmlStructure(noteId, noteContent, date) {
+export function getNoteHtmlStructure(noteId, noteContent, date, time) {
     let newDate = new Date(date);
-    let getDateAsString = newDate.toDateString()
-    let getTimeAsString = newDate.toLocaleTimeString()
+    let getDateAsString = newDate.toDateString();
+    let splitTimeArr = time.split(":");
+    let getTimeAsString = splitTimeArr[0] + ':' + splitTimeArr[1];
     return `<div class="p-2 text-white position-relative rounded-2 shadow-lg border-top border-5 border-info" style="background-color: #281d1d"><span class="ps-3" style="font-size: 0.8rem; color: #f6cd02">${getDateAsString} at ${getTimeAsString}</span><span class="d-block p-3 text-truncate">${noteContent}</span><div class="position-absolute end-0 top-0 pt-2 me-2"><i class="bi bi-pencil-fill me-2" role="button" title="Edit" style="font-size: 1rem; color: #148306;"></i><i class="bi bi-trash-fill" role="button" title="Delete" style="font-size: 1rem; color: #ce0404;"></i></div></div>`;
 }

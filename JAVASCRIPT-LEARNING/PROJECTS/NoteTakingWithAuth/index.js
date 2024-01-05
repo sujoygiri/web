@@ -111,6 +111,7 @@ async function isUserAuthenticated(action) {
                     break;
                 default:
                     console.log("action not allowed");
+                    break;
             }
         } else {
             modalObj.show(modalNode);

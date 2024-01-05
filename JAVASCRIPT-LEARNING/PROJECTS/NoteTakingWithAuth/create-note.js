@@ -1,6 +1,10 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
 import { handelError } from "./util.js";
 
+function encodeHTML(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
 function main() {
     const noteWriterNode = document.getElementById("note-writer");
     const typingStatusNode = document.getElementById("typing-status");
@@ -14,11 +18,12 @@ function main() {
     }
     noteWriterNode.addEventListener("input", (event) => {
         typingStatusNode.innerText = "Typing...";
+        let inputValue = encodeHTML(event.target.value)
         window.clearTimeout(timeOutId);
         timeOutId = window.setTimeout(() => {
             noteSaveBtnNode.setAttribute("disabled", "true");
             typingStatusNode.innerText = "Saved locally";
-            window.localStorage.setItem("note", event.target.value);
+            window.localStorage.setItem("note", inputValue);
             window.clearTimeout(timeOutId);
             noteSaveBtnNode.removeAttribute("disabled");
         },1000);
