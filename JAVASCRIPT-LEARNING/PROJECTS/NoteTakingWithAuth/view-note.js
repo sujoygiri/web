@@ -92,11 +92,23 @@ function main() {
 
     dateInputNode.addEventListener("change", async (event) => {
         let chooseDate = event.target.value;
-        selectType = "updated_at";
         let date = new Date(chooseDate).toISOString().split("T")[0];
         from = 0;
+        selectType = "updated_at";
+        noteListNode.innerHTML = "";
+        loadingSpinnerNode.classList.remove("d-none");
+        loadMoreBtnNode.classList.add("d-none");
+        notesInfoNode.classList.add("d-none");
         const { data, count } = await getNotes(selectType, date, from, from = from + maxFetchedNote);
-        console.log(data,count);
+        loadingSpinnerNode.classList.add("d-none");
+        renderNotes(data)
+        if (count > from + 1) {
+            loadMoreBtnNode.classList.remove("d-none");
+        } else {
+            loadMoreBtnNode.classList.add("d-none");
+            // notesInfoNode.classList.remove("d-none");
+            // notesInfoNode.innerText = "No more notes!";
+        }
     });
 
     dateCheckBoxNode.addEventListener("click", (event) => {
