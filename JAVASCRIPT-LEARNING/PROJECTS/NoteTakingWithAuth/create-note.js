@@ -1,9 +1,5 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
-import { handelError } from "./util.js";
-
-function encodeHTML(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-}
+import { encodeHTML,handelError } from "./util.js";
 
 function main() {
     const noteWriterNode = document.getElementById("note-writer");
@@ -33,7 +29,9 @@ function main() {
         noteSaveBtnNode.setAttribute("disabled", "true");
         let noteContent = window.localStorage.getItem("note");
         try {
-            let data = await noteApi.addNote(noteContent);
+            let creationDate = new Date().toLocaleDateString()
+            let creationTime = new Date().toLocaleTimeString()
+            let data = await noteApi.addNote(noteContent,creationDate,creationTime);
             if (data) {
                 noteWriterNode.value = null;
                 window.localStorage.removeItem("note");

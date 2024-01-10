@@ -39,18 +39,35 @@ export class Auth {
 
 
 class NoteDb {
-    async addNote(noteContent) {
+    async addNote(noteContent, creationDate, creationTime) {
         const { data, error } = await supabaseClient
             .from("notes")
-            .insert({ note_content: noteContent })
+            .insert({
+                note_content: noteContent,
+                created_at: creationDate,
+                updated_at: creationDate,
+                n_time: creationTime,
+            })
             .select();
         if (error) {
             throw error;
         }
         return data;
     }
-    async updateNote(noteId, noteContent) {
-
+    async updateNote(noteId, noteContent, updateDate, updateTime) {
+        const { data, error } = await supabaseClient
+            .from('notes')
+            .update({
+                note_content: noteContent,
+                updated_at: updateDate,
+                n_time: updateTime,
+            })
+            .eq('id', noteId)
+            .select();
+        if (error) {
+            throw error;
+        }
+        return data;
     }
     async deleteNote() {
 

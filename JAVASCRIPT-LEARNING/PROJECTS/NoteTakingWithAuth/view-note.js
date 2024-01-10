@@ -1,5 +1,6 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
 import { getNoteHtmlStructure } from "./util.js";
+import { onUpdateNote } from "./update-note.js";
 
 const textInputNode = document.getElementById("text-input");
 const dateInputNode = document.getElementById("date-input");
@@ -10,6 +11,9 @@ const loadingSpinnerNode = document.getElementById("loading-spinner");
 const loadMoreBtnSpinnerNode = document.getElementById("load-more-btn-spinner");
 // const sortingSelectNode = document.getElementById("sort-select")
 const dateCheckBoxNode = document.getElementById("date-checkbox");
+const viewNoteModalObj = new bootstrap.Modal("#view-note-modal");
+const viewNoteModalNode = document.getElementById("view-note-modal");
+
 
 function renderNotes(notes) {
     if (notes.length) {
@@ -21,6 +25,20 @@ function renderNotes(notes) {
         notesInfoNode.innerText = "No notes found!";
         notesInfoNode.classList.remove("d-none");
     }
+    document.querySelectorAll(".update").forEach((node) => {
+        node.addEventListener("click",(event) => {
+            event.stopPropagation()
+            const noteId = Number.parseInt(event.target.dataset.noteid);
+            let noteContent = event.target.parentNode.parentNode.children[1].innerText;
+            viewNoteModalObj.show(viewNoteModalNode)
+            onUpdateNote(noteId,noteContent);
+        })
+    })
+    document.querySelectorAll(".delete").forEach((node) => {
+        node.addEventListener("click",(event) => {
+            console.log(event.target.dataset);
+        })
+    })
 }
 
 async function getNotes(selectType, searchedValue, from, to) {
