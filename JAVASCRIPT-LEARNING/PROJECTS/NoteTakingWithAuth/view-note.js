@@ -1,6 +1,5 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
-import { getNoteHtmlStructure } from "./util.js";
-import { onUpdateNote } from "./update-note.js";
+import { getNoteHtmlStructure, encodeHTML } from "./util.js";
 
 const textInputNode = document.getElementById("text-input");
 const dateInputNode = document.getElementById("date-input");
@@ -13,12 +12,19 @@ const loadMoreBtnSpinnerNode = document.getElementById("load-more-btn-spinner");
 const dateCheckBoxNode = document.getElementById("date-checkbox");
 const viewNoteModalObj = new bootstrap.Modal("#view-note-modal");
 const viewNoteModalNode = document.getElementById("view-note-modal");
+const noteUpdateAlertNode = document.getElementById("note-update-alert");
+const noteUpdateTextAreaNode = document.getElementById("note-update-textarea");
+const noteUpdateBtnNode = document.getElementById("note-update-btn");
+const updateBtnSpinnerNode = document.getElementById("update-btn-spinner");
+
+let noteId = null;
+let updatedNoteContent = "";
 
 
 function renderNotes(notes) {
     if (notes.length) {
         notes.forEach(note => {
-            let noteStructureHtml = getNoteHtmlStructure(note.id, note.note_content, note.updated_at,note.n_time);
+            let noteStructureHtml = getNoteHtmlStructure(note.id, note.note_content, note.updated_at, note.n_time);
             noteListNode.innerHTML += noteStructureHtml;
         });
     } else {
@@ -26,19 +32,21 @@ function renderNotes(notes) {
         notesInfoNode.classList.remove("d-none");
     }
     document.querySelectorAll(".update").forEach((node) => {
-        node.addEventListener("click",(event) => {
-            event.stopPropagation()
-            const noteId = Number.parseInt(event.target.dataset.noteid);
-            let noteContent = event.target.parentNode.parentNode.children[1].innerText;
-            viewNoteModalObj.show(viewNoteModalNode)
-            onUpdateNote(noteId,noteContent);
-        })
-    })
+        node.addEventListener("click", (event) => {
+            event.stopPropagation();
+            noteId = Number.parseInt(event.target.dataset.noteid);
+            updatedNoteContent = event.target.parentNode.parentNode.children[1].innerText;
+            noteUpdateAlertNode.classList.add("d-none");
+            noteUpdateTextAreaNode.value = updatedNoteContent;
+            viewNoteModalObj.show(viewNoteModalNode);
+            // onUpdateNote(noteId,noteContent);
+        });
+    });
     document.querySelectorAll(".delete").forEach((node) => {
-        node.addEventListener("click",(event) => {
-            console.log(event.target.dataset);
-        })
-    })
+        node.addEventListener("click", (event) => {
+            console.log(event);
+        });
+    });
 }
 
 async function getNotes(selectType, searchedValue, from, to) {
@@ -119,7 +127,7 @@ function main() {
         notesInfoNode.classList.add("d-none");
         const { data, count } = await getNotes(selectType, date, from, from = from + maxFetchedNote);
         loadingSpinnerNode.classList.add("d-none");
-        renderNotes(data)
+        renderNotes(data);
         if (count > from + 1) {
             loadMoreBtnNode.classList.remove("d-none");
         } else {
@@ -137,6 +145,30 @@ function main() {
         } else {
             textInputNode.classList.add("d-none");
             dateInputNode.classList.remove("d-none");
+        }
+    });
+
+    noteUpdateTextAreaNode.addEventListener("input", (event) => {
+        updatedNoteContent = encodeHTML(event.target.value);
+    });
+
+    noteUpdateBtnNode.addEventListener("click", async () => {
+        console.log(noteId, updatedNoteContent);
+        let updateDate = new Date().toLocaleDateString();
+        let updateTime = new Date().toLocaleTimeString();
+        updateBtnSpinnerNode.classList.remove("d-none");
+        noteUpdateBtnNode.setAttribute("disabled", "true");
+        noteUpdateAlertNode.classList.add("d-none");
+        const data = await noteApi.updateNote(noteId, updatedNoteContent, updateDate, updateTime);
+        updateBtnSpinnerNode.classList.add("d-none");
+        noteUpdateBtnNode.removeAttribute("disabled");
+        if (data && data[0].id) {
+            noteUpdateAlertNode.innerText = "Note updated successfully!";
+            noteUpdateAlertNode.classList.add("alert-success");
+            noteUpdateAlertNode.classList.remove("d-none");
+            console.log(data);
+        } else {
+
         }
     });
 
@@ -159,6 +191,8 @@ function main() {
     //             break;
     //     }
     // })
+
+
 }
 
 checkUserAuthentication().then(session => {
