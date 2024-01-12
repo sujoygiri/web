@@ -188,11 +188,9 @@ function main() {
     });
 
     noteDeleteBtnNode.addEventListener("click", async () => {
-        console.log(noteId);
-        console.log(noteForDeleteNode);
         deleteBtnSpinnerNode.classList.remove("d-none");
-        const status = await noteApi.deleteNote(100);
-        console.log(status);
+        /** If there is an invalid note id then note should not remove from frontend view */
+        const status = await noteApi.deleteNote(noteId);
         if(status === 204){
             deleteBtnSpinnerNode.classList.add("d-none");
             noteActionModalObj.hide(noteActionModalNode);
