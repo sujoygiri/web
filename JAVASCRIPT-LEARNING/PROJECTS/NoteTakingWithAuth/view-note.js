@@ -10,16 +10,21 @@ const loadingSpinnerNode = document.getElementById("loading-spinner");
 const loadMoreBtnSpinnerNode = document.getElementById("load-more-btn-spinner");
 // const sortingSelectNode = document.getElementById("sort-select")
 const dateCheckBoxNode = document.getElementById("date-checkbox");
-const viewNoteModalObj = new bootstrap.Modal("#view-note-modal");
-const viewNoteModalNode = document.getElementById("view-note-modal");
+const noteActionModalObj = new bootstrap.Modal("#note-action-modal");
+const noteActionModalNode = document.getElementById("note-action-modal");
+const noteActionModalHeaderNode = document.getElementById("modal-header-text");
 const noteUpdateAlertNode = document.getElementById("note-update-alert");
 const noteUpdateTextAreaNode = document.getElementById("note-update-textarea");
 const noteUpdateBtnNode = document.getElementById("note-update-btn");
 const updateBtnSpinnerNode = document.getElementById("update-btn-spinner");
+const noteDeleteBtnNode = document.getElementById("note-delete-btn");
+const deleteBtnSpinnerNode = document.getElementById("delete-btn-spinner");
+const noteDeleteCancelBtnNode = document.getElementById("note-delete-cancel-btn");
 
 let noteId = null;
 let updatedNoteContent = "";
-
+let noteForUpdateNode = null;
+let noteForDeleteNode = null;
 
 function renderNotes(notes) {
     if (notes.length) {
@@ -34,17 +39,30 @@ function renderNotes(notes) {
     document.querySelectorAll(".update").forEach((node) => {
         node.addEventListener("click", (event) => {
             event.stopPropagation();
+            noteForUpdateNode = event.target;
             noteId = Number.parseInt(event.target.dataset.noteid);
             updatedNoteContent = event.target.parentNode.parentNode.children[1].innerText;
             noteUpdateAlertNode.classList.add("d-none");
+            noteUpdateTextAreaNode.classList.remove("d-none");
+            noteUpdateBtnNode.classList.remove("d-none");
+            noteDeleteBtnNode.classList.add("d-none");
+            noteDeleteCancelBtnNode.classList.add("d-none");
+            noteActionModalHeaderNode.textContent = "Modify your note bellow";
             noteUpdateTextAreaNode.value = updatedNoteContent;
-            viewNoteModalObj.show(viewNoteModalNode);
-            // onUpdateNote(noteId,noteContent);
+            noteActionModalObj.show(noteActionModalNode);
         });
     });
     document.querySelectorAll(".delete").forEach((node) => {
         node.addEventListener("click", (event) => {
-            console.log(event);
+            event.stopPropagation();
+            noteForDeleteNode = event.target.parentNode.parentNode;
+            noteId = Number.parseInt(event.target.dataset.noteid);
+            noteUpdateTextAreaNode.classList.add("d-none");
+            noteUpdateBtnNode.classList.add("d-none");
+            noteDeleteBtnNode.classList.remove("d-none");
+            noteDeleteCancelBtnNode.classList.remove("d-none");
+            noteActionModalHeaderNode.textContent = "Are you sure you want to delete?";
+            noteActionModalObj.show(noteActionModalNode);
         });
     });
 }
@@ -54,10 +72,12 @@ async function getNotes(selectType, searchedValue, from, to) {
     return { data, count };
 }
 
+/** Need to implement note sort function */
 // async function getSortedNote(selectDataType,isAscending){
 //     const data = await noteApi.sortNote(selectDataType,isAscending);
 //     return data;
 // }
+/** -------- */
 
 function main() {
 
@@ -94,7 +114,7 @@ function main() {
     });
 
     textInputNode.addEventListener("input", (event) => {
-        searchedValue = event.target.value;
+        searchedValue = encodeHTML(event.target.value);
         from = 0;
         selectType = "note_content";
         noteListNode.innerHTML = "";
@@ -110,30 +130,26 @@ function main() {
                 loadMoreBtnNode.classList.remove("d-none");
             } else {
                 loadMoreBtnNode.classList.add("d-none");
-                // notesInfoNode.classList.remove("d-none");
-                // notesInfoNode.innerText = "No more notes!";
             }
         }, 1000);
     });
 
     dateInputNode.addEventListener("change", async (event) => {
         let chooseDate = event.target.value;
-        let date = new Date(chooseDate).toISOString().split("T")[0];
+        searchedValue = new Date(chooseDate).toISOString().split("T")[0];
         from = 0;
         selectType = "updated_at";
         noteListNode.innerHTML = "";
         loadingSpinnerNode.classList.remove("d-none");
         loadMoreBtnNode.classList.add("d-none");
         notesInfoNode.classList.add("d-none");
-        const { data, count } = await getNotes(selectType, date, from, from = from + maxFetchedNote);
+        const { data, count } = await getNotes(selectType, searchedValue, from, from = from + maxFetchedNote);
         loadingSpinnerNode.classList.add("d-none");
         renderNotes(data);
         if (count > from + 1) {
             loadMoreBtnNode.classList.remove("d-none");
         } else {
             loadMoreBtnNode.classList.add("d-none");
-            // notesInfoNode.classList.remove("d-none");
-            // notesInfoNode.innerText = "No more notes!";
         }
     });
 
@@ -153,7 +169,6 @@ function main() {
     });
 
     noteUpdateBtnNode.addEventListener("click", async () => {
-        console.log(noteId, updatedNoteContent);
         let updateDate = new Date().toLocaleDateString();
         let updateTime = new Date().toLocaleTimeString();
         updateBtnSpinnerNode.classList.remove("d-none");
@@ -166,12 +181,26 @@ function main() {
             noteUpdateAlertNode.innerText = "Note updated successfully!";
             noteUpdateAlertNode.classList.add("alert-success");
             noteUpdateAlertNode.classList.remove("d-none");
-            console.log(data);
+            noteForUpdateNode.parentNode.parentNode.children[1].innerText = data[0].note_content;
         } else {
-
+            /** need to implement error handel */
         }
     });
 
+    noteDeleteBtnNode.addEventListener("click", async () => {
+        console.log(noteId);
+        console.log(noteForDeleteNode);
+        deleteBtnSpinnerNode.classList.remove("d-none");
+        const status = await noteApi.deleteNote(100);
+        console.log(status);
+        if(status === 204){
+            deleteBtnSpinnerNode.classList.add("d-none");
+            noteActionModalObj.hide(noteActionModalNode);
+            noteListNode.removeChild(noteForDeleteNode);
+        }
+    });
+
+    /**need to implement note sorting function */
     // sortingSelectNode.addEventListener("change",async (event)=>{
     //     let selectValue = event.target.value;
     //     switch (selectValue) {
@@ -191,7 +220,7 @@ function main() {
     //             break;
     //     }
     // })
-
+    /** --------- */
 
 }
 

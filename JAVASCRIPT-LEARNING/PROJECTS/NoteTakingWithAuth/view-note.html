@@ -14,26 +14,34 @@
 
 <body>
     <!--Note Update Modal -->
-    <div class="modal fade" id="view-note-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="note-action-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-header-text" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-6 ms-2" id="staticBackdropLabel">Modify your note bellow</h1>
+                    <h1 class="modal-title fs-6 ms-2" id="modal-header-text"></h1>
                     <button type="button" id="alert-close-btn" class="btn-close text-danger-emphasis" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert fade show p-2 mt-2 mb-3 d-flex justify-content-center d-none" role="alert" id="note-update-alert"></div>
-                    <div class="position-relative mt-1 mb-3">
-                        <textarea class="form-control border-2 shadow" placeholder="Start taking your note here"
+                    <div class="position-relative mt-1">
+                        <textarea class="form-control border-2 mb-3 shadow" placeholder="Start taking your note here"
                             id="note-update-textarea" style="height: 50svh"></textarea>
                     </div>
-                    <div class="d-flex justify-content-center mt-4">
-                        <button class="btn btn-outline-success w-50 shadow fs-5" id="note-update-btn">
+                    <div class="d-flex justify-content-center mt-2">
+                        <!-- Note update action btn -->
+                        <button class="btn btn-outline-success shadow w-50 fs-5" id="note-update-btn">
                             <span role="status">Update</span>
                             <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"
-                                id="update-btn-spinner"></span>
+                            id="update-btn-spinner"></span>
+                        </button>
+                        <!-- Note delete action btn -->
+                        <button class="btn btn-outline-secondary me-2 d-none" id="note-delete-cancel-btn">Cancel</button>
+                        <button class="btn btn-danger d-none" id="note-delete-btn">
+                            <span role="status">Ok</span>
+                            <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"
+                            id="delete-btn-spinner"></span>
                         </button>
                     </div>
                 </div>

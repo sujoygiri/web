@@ -69,17 +69,25 @@ class NoteDb {
         }
         return data;
     }
-    async deleteNote() {
-
+    async deleteNote(noteId) {
+        const { error,status,statusText } = await supabaseClient
+            .from('notes')
+            .delete()
+            .eq('id', noteId);
+        if(error){
+            throw error;
+        }
+        console.log(error,statusText);
+        return status;
+        
     }
-
-    async searchAndGet(selectType, searchedValue, form, to) {
+    async searchAndGet(selectType, searchedValue, from, to) {
         if (selectType === "note_content") {
             const { error, data, count } = await supabaseClient
                 .from('notes')
                 .select('*', { count: 'exact' })
                 .ilike(selectType, `%${searchedValue}%`)
-                .range(form, to);
+                .range(from, to);
             if (error) {
                 throw error;
             }
@@ -88,7 +96,8 @@ class NoteDb {
             const { error, data, count } = await supabaseClient
                 .from('notes')
                 .select("*", { count: 'exact' })
-                .eq(selectType, searchedValue);
+                .eq(selectType, searchedValue)
+                .range(from, to);
             if (error) {
                 throw error;
             }
