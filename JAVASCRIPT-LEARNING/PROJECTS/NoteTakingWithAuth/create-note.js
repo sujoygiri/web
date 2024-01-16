@@ -2,6 +2,7 @@ import { noteApi, checkUserAuthentication } from "./supabse-api.js";
 import { encodeHTML,handelError } from "./util.js";
 
 function main() {
+    const noteCreateLinkNode = document.querySelector(".note-create-link")
     const noteWriterNode = document.getElementById("note-writer");
     const typingStatusNode = document.getElementById("typing-status");
     const noteSaveBtnNode = document.getElementById("note-save-btn");
@@ -9,6 +10,7 @@ function main() {
     const alertNode = document.querySelector(".alert");
     let timeOutId = null;
     let noteContent = window.localStorage.getItem("note");
+    window.location.pathname === "/create-note.html" && noteCreateLinkNode.classList.add("active")
     if (noteContent && noteContent.length) {
         noteWriterNode.value = noteContent;
     }

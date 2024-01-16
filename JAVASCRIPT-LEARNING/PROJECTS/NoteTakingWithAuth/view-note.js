@@ -1,6 +1,7 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
 import { getNoteHtmlStructure, encodeHTML } from "./util.js";
 
+const noteViewLinkNode = document.querySelector(".note-view-link")
 const textInputNode = document.getElementById("text-input");
 const dateInputNode = document.getElementById("date-input");
 const loadMoreBtnNode = document.getElementById("load-more-btn");
@@ -29,8 +30,8 @@ let noteForDeleteNode = null;
 function renderNotes(notes) {
     if (notes.length) {
         notes.forEach(note => {
-            let noteStructureHtml = getNoteHtmlStructure(note.id, note.note_content, note.updated_at, note.n_time);
-            noteListNode.innerHTML += noteStructureHtml;
+            let noteHtmlStructure = getNoteHtmlStructure(note.id, note.note_content, note.updated_at, note.n_time);
+            noteListNode.innerHTML += noteHtmlStructure;
         });
     } else {
         notesInfoNode.innerText = "No notes found!";
@@ -80,13 +81,13 @@ async function getNotes(selectType, searchedValue, from, to) {
 /** -------- */
 
 function main() {
-
     let timeOutId = null;
     let from = 0;
     let maxFetchedNote = 4;
     let searchedValue = "";
     let selectType = "";
     window.addEventListener("load", async () => {
+        window.location.pathname === "/view-note.html" && noteViewLinkNode.classList.add("active")
         selectType = "note_content";
         const { data, count } = await getNotes(selectType, searchedValue, from, from = from + maxFetchedNote);
         renderNotes(data);
@@ -197,6 +198,10 @@ function main() {
             noteListNode.removeChild(noteForDeleteNode);
         }
     });
+
+    noteDeleteCancelBtnNode.addEventListener("click",()=>{
+        noteActionModalObj.hide(noteActionModalNode);
+    })
 
     /**need to implement note sorting function */
     // sortingSelectNode.addEventListener("change",async (event)=>{

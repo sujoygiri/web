@@ -20,7 +20,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-6 ms-2" id="modal-header-text"></h1>
-                    <button type="button" id="alert-close-btn" class="btn-close text-danger-emphasis" data-bs-dismiss="modal"
+                    <button type="button" id="alert-close-btn" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -37,18 +37,14 @@
                             id="update-btn-spinner"></span>
                         </button>
                         <!-- Note delete action btn -->
-                        <button class="btn btn-outline-secondary me-2 d-none" id="note-delete-cancel-btn">Cancel</button>
+                        <button class="btn btn-outline-success me-2 d-none" id="note-delete-cancel-btn">No</button>
                         <button class="btn btn-danger d-none" id="note-delete-btn">
-                            <span role="status">Ok</span>
+                            <span role="status">Yes</span>
                             <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"
                             id="delete-btn-spinner"></span>
                         </button>
                     </div>
                 </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div> -->
             </div>
         </div>
     </div>
@@ -66,10 +62,10 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                                <a class="nav-link" href="/create-note.html">Create</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
+                                <a class="nav-link note-view-link" href="/view-note.html">View</a>
                             </li>
                         </ul>
                         <div class="d-flex">
