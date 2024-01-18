@@ -1,5 +1,5 @@
 import { noteApi, checkUserAuthentication } from "./supabse-api.js";
-import { getNoteHtmlStructure, encodeHTML } from "./util.js";
+import { getNoteHtmlStructure, encodeHTML, handelError } from "./util.js";
 
 const noteViewLinkNode = document.querySelector(".note-view-link")
 const textInputNode = document.getElementById("text-input");
@@ -15,6 +15,7 @@ const noteActionModalObj = new bootstrap.Modal("#note-action-modal");
 const noteActionModalNode = document.getElementById("note-action-modal");
 const noteActionModalHeaderNode = document.getElementById("modal-header-text");
 const noteUpdateAlertNode = document.getElementById("note-update-alert");
+const mainAlertNode = document.getElementById("main-alert")
 const noteUpdateTextAreaNode = document.getElementById("note-update-textarea");
 const noteUpdateBtnNode = document.getElementById("note-update-btn");
 const updateBtnSpinnerNode = document.getElementById("update-btn-spinner");
@@ -69,8 +70,12 @@ function renderNotes(notes) {
 }
 
 async function getNotes(selectType, searchedValue, from, to) {
-    const { data, count } = await noteApi.searchAndGet(selectType, searchedValue, from, to);
-    return { data, count };
+    try {
+        const { data, count } = await noteApi.searchAndGet(selectType, searchedValue, from, to);
+        return { data, count };
+    } catch (error) {
+        handelError(error,"danger",mainAlertNode)
+    }
 }
 
 /** Need to implement note sort function */

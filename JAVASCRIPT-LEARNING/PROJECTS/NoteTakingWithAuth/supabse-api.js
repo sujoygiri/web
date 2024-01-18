@@ -77,7 +77,6 @@ class NoteDb {
         if(error){
             throw error;
         }
-        console.log(error,statusText);
         return status;
         
     }
