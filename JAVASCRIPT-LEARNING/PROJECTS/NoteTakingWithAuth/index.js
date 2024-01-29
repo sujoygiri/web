@@ -1,4 +1,4 @@
-import { authApi } from "./supabse-api.js";
+import { authApi, checkUserAuthentication } from "./supabase-api.js";
 import { handelError } from "./util.js";
 
 /**
@@ -9,8 +9,25 @@ import { handelError } from "./util.js";
 function main() {
     const createNoteBtn = document.getElementById("create-note-btn");
     const viewNoteBtn = document.getElementById("view-note-btn");
+    const profileDropdownBtnNode = document.getElementById("profile-dropdown");
     const navBarSignInBtnNode = document.getElementById("navbar-sign-in-btn");
-    
+    const logOutBtn = document.getElementById("logout-btn");
+    const modalObj = new bootstrap.Modal("#main-modal");
+    const modalNode = document.getElementById("main-modal");
+    const alertPlaceholder = document.getElementById('alert-placeholder');
+
+    const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('');
+
+        alertPlaceholder.append(wrapper);
+    };
+
     /**
      * @param {string} action
      * @param {bootstrap.Modal} modalObj
@@ -19,7 +36,7 @@ function main() {
      * upon clicking on sign up btn rendering a confirmation password field.
      * upon clicking on sign in btn removing confirm password field
      */
-    function showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode) {
+    function showCorrectAuthFormAndAuthenticate(action) {
         const authFormNode = document.getElementById("auth-form");
         const authFormTitleNode = document.querySelector(".modal-title");
         const confirmPasswordBoxNode = document.getElementById("confirm-password-box");
@@ -67,9 +84,14 @@ function main() {
             if (authFormTitleNode.dataset.name === "signin") {
                 try {
                     let userData = await authApi.signIn(emailId, password);
-                    if (userData) {
+                    if (userData && action) {
                         modalObj.hide(modalNode);
                         window.location.href = action + "-" + "note" + "." + "html";
+                    } else {
+                        modalObj.hide(modalNode);
+                        appendAlert("Sign in successful", "success");
+                        navBarSignInBtnNode.classList.add("d-none");
+                        profileDropdownBtnNode.classList.remove("d-none");
                     }
                 } catch (error) {
                     handelError(error, "danger", alertNode);
@@ -78,11 +100,15 @@ function main() {
                 if (password === confirmPassword) {
                     try {
                         let userData = await authApi.signUp(emailId, password);
-                        if (userData) {
+                        if (userData && action) {
                             modalObj.hide(modalNode);
                             window.location.href = action + "-" + "note" + "." + "html";
+                        } else {
+                            modalObj.hide(modalNode);
+                            appendAlert("Sign up successful", "success");
+                            navBarSignInBtnNode.classList.add("d-none");
+                            profileDropdownBtnNode.classList.remove("d-none");
                         }
-
                     } catch (error) {
 
                     }
@@ -106,9 +132,6 @@ function main() {
      * also calling 'showCorrectAuthFormAndAuthenticate()' for rendering correct auth form
      */
     async function isUserAuthenticated(action) {
-        const modalObj = new bootstrap.Modal("#main-modal");
-        const modalNode = document.getElementById("main-modal");
-        const mainAlertNode = document.getElementById("main-alert");
         const createSpinnerNode = document.getElementById("create-spinner");
         const viewSpinnerNode = document.getElementById("view-spinner");
         try {
@@ -132,10 +155,10 @@ function main() {
                 }
             } else {
                 modalObj.show(modalNode);
-                showCorrectAuthFormAndAuthenticate(action, modalObj, modalNode);
+                showCorrectAuthFormAndAuthenticate(action);
             }
         } catch (error) {
-            handelError(error, "danger", mainAlertNode);
+            appendAlert(error, "danger");
         }
         action === "create" ?
             createSpinnerNode.classList.add("d-none") :
@@ -144,12 +167,39 @@ function main() {
         viewNoteBtn.removeAttribute("disabled");
     }
 
-    navBarSignInBtnNode.addEventListener("click",()=>{
-        
-    })
+    navBarSignInBtnNode.addEventListener("click", () => {
+        modalObj.show(modalNode);
+        showCorrectAuthFormAndAuthenticate(null);
+    });
+
+    logOutBtn.addEventListener("click", async () => {
+        try {
+            await authApi.logOut();
+            appendAlert("Logout successful", "success");
+            navBarSignInBtnNode.classList.remove("d-none");
+            profileDropdownBtnNode.classList.add("d-none");
+        } catch (error) {
+            appendAlert(error, "danger");
+        }
+    });
 
     createNoteBtn.addEventListener("click", () => isUserAuthenticated("create"));
     viewNoteBtn.addEventListener("click", () => isUserAuthenticated("view"));
+
+    checkUserAuthentication().then(session => {
+        if (session && session.user) {
+            navBarSignInBtnNode.classList.add("d-none");
+            profileDropdownBtnNode.classList.remove("d-none");
+        } else {
+            navBarSignInBtnNode.classList.remove("d-none");
+            profileDropdownBtnNode.classList.add("d-none");
+        }
+    }).catch(error => {
+        if (error) {
+            navBarSignInBtnNode.classList.remove("d-none");
+            profileDropdownBtnNode.classList.add("d-none");
+        }
+    });
 }
 
 main();

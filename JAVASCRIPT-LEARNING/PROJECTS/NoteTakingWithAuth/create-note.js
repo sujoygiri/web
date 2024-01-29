@@ -1,4 +1,4 @@
-import { noteApi, checkUserAuthentication } from "./supabse-api.js";
+import { noteApi, checkUserAuthentication } from "./supabase-api.js";
 import { encodeHTML,handelError } from "./util.js";
 
 function main() {

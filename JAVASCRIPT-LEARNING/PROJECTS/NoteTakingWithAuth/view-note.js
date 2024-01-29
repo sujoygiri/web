@@ -1,4 +1,4 @@
-import { noteApi, checkUserAuthentication } from "./supabse-api.js";
+import { noteApi, checkUserAuthentication } from "./supabase-api.js";
 import { getNoteHtmlStructure, encodeHTML, handelError } from "./util.js";
 
 const noteViewLinkNode = document.querySelector(".note-view-link")

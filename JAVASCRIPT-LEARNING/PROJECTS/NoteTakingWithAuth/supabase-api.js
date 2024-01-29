@@ -35,6 +35,11 @@ export class Auth {
         return data;
     }
 
+    async logOut() {
+        const { error } = await supabaseClient.auth.signOut();
+        if(error) throw error;
+    }
+
 }
 
 
@@ -70,15 +75,15 @@ class NoteDb {
         return data;
     }
     async deleteNote(noteId) {
-        const { error,status,statusText } = await supabaseClient
+        const { error, status, statusText } = await supabaseClient
             .from('notes')
             .delete()
             .eq('id', noteId);
-        if(error){
+        if (error) {
             throw error;
         }
         return status;
-        
+
     }
     async searchAndGet(selectType, searchedValue, from, to) {
         if (selectType === "note_content") {
