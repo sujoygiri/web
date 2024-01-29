@@ -1,7 +1,7 @@
-import { noteApi, checkUserAuthentication } from "./supabase-api.js";
+import { noteApi, checkUserAuthentication, authApi } from "./supabase-api.js";
 import { getNoteHtmlStructure, encodeHTML, handelError } from "./util.js";
 
-const noteViewLinkNode = document.querySelector(".note-view-link")
+const noteViewLinkNode = document.querySelector(".note-view-link");
 const textInputNode = document.getElementById("text-input");
 const dateInputNode = document.getElementById("date-input");
 const loadMoreBtnNode = document.getElementById("load-more-btn");
@@ -15,13 +15,15 @@ const noteActionModalObj = new bootstrap.Modal("#note-action-modal");
 const noteActionModalNode = document.getElementById("note-action-modal");
 const noteActionModalHeaderNode = document.getElementById("modal-header-text");
 const noteUpdateAlertNode = document.getElementById("note-update-alert");
-const mainAlertNode = document.getElementById("main-alert")
+const mainAlertNode = document.getElementById("main-alert");
 const noteUpdateTextAreaNode = document.getElementById("note-update-textarea");
 const noteUpdateBtnNode = document.getElementById("note-update-btn");
 const updateBtnSpinnerNode = document.getElementById("update-btn-spinner");
 const noteDeleteBtnNode = document.getElementById("note-delete-btn");
 const deleteBtnSpinnerNode = document.getElementById("delete-btn-spinner");
 const noteDeleteCancelBtnNode = document.getElementById("note-delete-cancel-btn");
+const profileDropdownBtnNode = document.getElementById("profile-dropdown");
+const logOutBtn = document.getElementById("logout-btn");
 
 let noteId = null;
 let updatedNoteContent = "";
@@ -74,7 +76,7 @@ async function getNotes(selectType, searchedValue, from, to) {
         const { data, count } = await noteApi.searchAndGet(selectType, searchedValue, from, to);
         return { data, count };
     } catch (error) {
-        handelError(error,"danger",mainAlertNode)
+        handelError(error, "danger", mainAlertNode);
     }
 }
 
@@ -92,7 +94,7 @@ function main() {
     let searchedValue = "";
     let selectType = "";
     window.addEventListener("load", async () => {
-        window.location.pathname === "/view-note.html" && noteViewLinkNode.classList.add("active")
+        window.location.pathname === "/view-note.html" && noteViewLinkNode.classList.add("active");
         selectType = "note_content";
         const { data, count } = await getNotes(selectType, searchedValue, from, from = from + maxFetchedNote);
         renderNotes(data);
@@ -197,17 +199,25 @@ function main() {
         deleteBtnSpinnerNode.classList.remove("d-none");
         /** If there is an invalid note id then note should not remove from frontend view */
         const status = await noteApi.deleteNote(noteId);
-        if(status === 204){
+        if (status === 204) {
             deleteBtnSpinnerNode.classList.add("d-none");
             noteActionModalObj.hide(noteActionModalNode);
             noteListNode.removeChild(noteForDeleteNode);
         }
     });
 
-    noteDeleteCancelBtnNode.addEventListener("click",()=>{
+    noteDeleteCancelBtnNode.addEventListener("click", () => {
         noteActionModalObj.hide(noteActionModalNode);
-    })
+    });
 
+    logOutBtn.addEventListener("click", async () => {
+        try {
+            await authApi.logOut();
+            window.location.href = "/";
+        } catch (error) {
+            handelError(error, "danger", mainAlertNode);
+        }
+    });
     /**need to implement note sorting function */
     // sortingSelectNode.addEventListener("change",async (event)=>{
     //     let selectValue = event.target.value;
@@ -235,6 +245,7 @@ function main() {
 checkUserAuthentication().then(session => {
     if (session) {
         main();
+        profileDropdownBtnNode.classList.remove("d-none");
     } else {
         window.location.href = "/";
     }

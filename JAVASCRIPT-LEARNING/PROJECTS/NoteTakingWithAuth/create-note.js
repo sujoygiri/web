@@ -1,5 +1,8 @@
-import { noteApi, checkUserAuthentication } from "./supabase-api.js";
+import { noteApi, checkUserAuthentication, authApi } from "./supabase-api.js";
 import { encodeHTML,handelError } from "./util.js";
+
+const profileDropdownBtnNode = document.getElementById("profile-dropdown");
+const logOutBtn = document.getElementById("logout-btn");
 
 function main() {
     const noteCreateLinkNode = document.querySelector(".note-create-link")
@@ -48,11 +51,21 @@ function main() {
         saveBtnSpinnerNode.classList.add("d-none");
         noteSaveBtnNode.removeAttribute("disabled");
     });
+
+    logOutBtn.addEventListener("click", async () => {
+        try {
+            await authApi.logOut();
+            window.location.href = "/";
+        } catch (error) {
+            handelError(error, "danger", alertNode);
+        }
+    });
 }
 
 checkUserAuthentication().then(session => {
     if (session) {
         main();
+        profileDropdownBtnNode.classList.remove("d-none");
     } else {
         window.location.href = "/";
     }

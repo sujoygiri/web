@@ -24,7 +24,8 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert fade show p-2 mt-2 mb-3 d-flex justify-content-center d-none" role="alert" id="note-update-alert"></div>
+                    <div class="alert fade show p-2 mt-2 mb-3 d-flex justify-content-center d-none" role="alert"
+                        id="note-update-alert"></div>
                     <div class="position-relative mt-1">
                         <textarea class="form-control border-2 mb-3 shadow" placeholder="Start taking your note here"
                             id="note-update-textarea" style="height: 50svh"></textarea>
@@ -34,14 +35,14 @@
                         <button class="btn btn-outline-success shadow w-50 fs-5" id="note-update-btn">
                             <span role="status">Update</span>
                             <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"
-                            id="update-btn-spinner"></span>
+                                id="update-btn-spinner"></span>
                         </button>
                         <!-- Note delete action btn -->
                         <button class="btn btn-outline-success me-2 d-none" id="note-delete-cancel-btn">No</button>
                         <button class="btn btn-danger d-none" id="note-delete-btn">
                             <span role="status">Yes</span>
                             <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"
-                            id="delete-btn-spinner"></span>
+                                id="delete-btn-spinner"></span>
                         </button>
                     </div>
                 </div>
@@ -68,9 +69,19 @@
                                 <a class="nav-link note-view-link" href="/view-note.html">View</a>
                             </li>
                         </ul>
-                        <div class="d-flex">
-                            <button class="btn btn-outline-success" type="submit">Search
-                            </button>
+                        <div class="d-flex align-items-center">
+                            <div class="dropdown me-2 d-none" id="profile-dropdown">
+                                <button class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img height="25px" width="25px" src="assets/avatar.png" alt="avatar">
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end mt-2 bg-secondary">
+                                    <li><button class="dropdown-item" type="button">Profile</button></li>
+                                    <li><button class="dropdown-item text-danger" id="logout-btn" type="button">
+                                            <span role="status">Logout</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +91,8 @@
     <div class="overflow-hidden">
         <div class="d-flex justify-content-center">
             <div class="mt-4 m-md-5 w-50">
-                <div class="alert fade show p-2 mt-2 mb-3 d-flex justify-content-center d-none" role="alert" id="main-alert"></div>
+                <div class="alert fade show p-2 mt-2 mb-3 d-flex justify-content-center d-none" role="alert"
+                    id="main-alert"></div>
                 <div class="d-flex mb-2">
                     <input type="text" class="form-control" id="text-input" placeholder="Search note by content">
                     <input type="date" class="form-control d-none" id="date-input">
