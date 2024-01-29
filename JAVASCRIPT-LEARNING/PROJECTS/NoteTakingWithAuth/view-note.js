@@ -203,6 +203,7 @@ function main() {
             deleteBtnSpinnerNode.classList.add("d-none");
             noteActionModalObj.hide(noteActionModalNode);
             noteListNode.removeChild(noteForDeleteNode);
+            from -= 1;
         }
     });
 
